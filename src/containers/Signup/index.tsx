@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate } from 'react-router-dom'
 import {
   HiOutlineMail,
   HiOutlineLockClosed,
@@ -6,15 +6,15 @@ import {
   HiOutlineCalendar,
   HiOutlineUser,
   HiOutlineGlobe,
-} from "react-icons/hi"
-import { useFormik } from "formik"
-import { signIn, signUp, verifyEmail } from "../../services/sign"
-import { addUser } from "../../services/users"
-import { toTimestame } from "../../libs/date"
-import { guidGenerator } from "../../libs/utils";
-import { message } from "../../componens/message"
-import { useState } from "react"
-import { isValidPassword } from "../../libs/password"
+} from 'react-icons/hi'
+import { useFormik } from 'formik'
+import { signIn, signUp, verifyEmail } from '~/services/sign'
+import { addUser } from '~/services/users'
+import { toTimestame } from '~/libs/date'
+import { guidGenerator } from '~/libs/utils'
+import { message } from '~/componens/message'
+import { useState } from 'react'
+import { isValidPassword } from '~/libs/password'
 
 function Signup() {
   const navigate = useNavigate()
@@ -22,11 +22,11 @@ function Signup() {
 
   const formik = useFormik({
     initialValues: {
-      fullname: "",
-      email: "",
-      password: "",
-      address: "",
-      photoURL: "",
+      fullname: '',
+      email: '',
+      password: '',
+      address: '',
+      photoURL: '',
       dateOfBirth: new Date().toDateString(),
     },
     onSubmit: (user) => {
@@ -74,20 +74,20 @@ And not have spaces`)
           console.dir(error.code)
 
           switch (error.code) {
-            case "auth/invalid-email":
-              message.error("Email already in use")
+            case 'auth/invalid-email':
+              message.error('Email already in use')
               break
 
-            case "auth/internal-error":
-              message.error("Internal error")
+            case 'auth/internal-error':
+              message.error('Internal error')
               break
 
-            case "auth/email-already-in-use":
-              message.error("Email already in use")
+            case 'auth/email-already-in-use':
+              message.error('Email already in use')
               break
 
             default:
-              message.error("Something went wrong")
+              message.error('Something went wrong')
               break
           }
         })
@@ -105,10 +105,7 @@ And not have spaces`)
             <HiClipboardCheck className="h-7 w-7 rounded-full text-indigo-500 p-1.5 bg-indigo-100" />
             <span>Sign up</span>
           </h2>
-          <p className="sign-desc">
-            Become a member - by spending a few second to tell us some
-            information about you
-          </p>
+          <p className="sign-desc">Become a member - by spending a few second to tell us some information about you</p>
 
           <form className="sign-form" onSubmit={formik.handleSubmit}>
             <div className="input-group">
@@ -156,10 +153,7 @@ And not have spaces`)
               </label> */}
               <div className="form-control">
                 <div className="form-icon">
-                  <HiOutlineLockClosed
-                    className="h-5 w-5 "
-                    aria-hidden="true"
-                  />
+                  <HiOutlineLockClosed className="h-5 w-5 " aria-hidden="true" />
                 </div>
                 <input
                   type="password"
@@ -186,7 +180,7 @@ And not have spaces`)
                   id="date"
                   placeholder="Date of birth"
                   onChange={(ev) => {
-                    formik.setFieldValue("dateOfBirth", ev.target.value)
+                    formik.setFieldValue('dateOfBirth', ev.target.value)
                   }}
                   value={formik.values.dateOfBirth}
                 />
@@ -213,10 +207,7 @@ And not have spaces`)
             </div>
 
             <div className="input-group">
-              <button
-                type="submit"
-                className="btn btn-xl btn-block btn-primary"
-              >
+              <button type="submit" className="btn btn-xl btn-block btn-primary">
                 Sign up
               </button>
             </div>
@@ -224,10 +215,7 @@ And not have spaces`)
             <div className="input-group">
               <p className="text-xs">
                 <span className="opacity-80">Already have an account? </span>
-                <Link
-                  to={"/signin"}
-                  className="text-color-primary hover:underline"
-                >
+                <Link to={'/signin'} className="text-color-primary hover:underline">
                   Back to sign in
                 </Link>
               </p>

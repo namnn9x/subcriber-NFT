@@ -1,54 +1,56 @@
-import { Link, useNavigate } from "react-router-dom";
-import { HiOutlineMail, HiOutlineLockClosed, HiKey } from "react-icons/hi";
-import { signIn } from "../../services/sign";
-import { useFormik } from "formik";
-import { message } from "../../componens/message";
+import { Link, useNavigate } from 'react-router-dom'
+import { HiOutlineMail, HiOutlineLockClosed, HiKey } from 'react-icons/hi'
+import { useFormik } from 'formik'
+import { signIn } from '~/services/sign'
+import { message } from '~/componens/message'
 
 function Signin() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const formik = useFormik({
     initialValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
     onSubmit: ({ email, password }) => {
-      signIn(email, password).then((user) => {
-        if (user) {
-          message.success("Signing in successfully ! 😎")
-          navigate("/");
-        } else {
-          alert("username or password invalid");
-        }
-      }).catch(err => {
-        console.dir(err)
-        let mess = ''
-        switch (err.code) {
-          case "auth/wrong-password":
-            mess = "Wrong password";
-            break;
+      signIn(email, password)
+        .then((user) => {
+          if (user) {
+            message.success('Signing in successfully ! 😎')
+            navigate('/')
+          } else {
+            alert('username or password invalid')
+          }
+        })
+        .catch((err) => {
+          console.dir(err)
+          let mess = ''
+          switch (err.code) {
+            case 'auth/wrong-password':
+              mess = 'Wrong password'
+              break
 
-          case "auth/user-not-found":
-            mess = "User not found";
-            break;
+            case 'auth/user-not-found':
+              mess = 'User not found'
+              break
 
-          case "auth/internal-error":
-            mess = "Internal Error"
-            break;
+            case 'auth/internal-error':
+              mess = 'Internal Error'
+              break
 
-          case "auth/invalid-email":
-            mess = "Invalid email"
-            break;
+            case 'auth/invalid-email':
+              mess = 'Invalid email'
+              break
 
-          default:
-            mess = "Something went wrong"
-            break;
-        }
+            default:
+              mess = 'Something went wrong'
+              break
+          }
 
-        message.error(mess)
-      });
+          message.error(mess)
+        })
     },
-  });
+  })
 
   return (
     <div>
@@ -70,10 +72,7 @@ function Signin() {
               </label> */}
               <div className="form-control">
                 <div className="form-icon">
-                  <HiOutlineMail
-                    className="h-5 w-5"
-                    aria-hidden="true"
-                  />
+                  <HiOutlineMail className="h-5 w-5" aria-hidden="true" />
                 </div>
                 <input
                   type="email"
@@ -96,10 +95,7 @@ function Signin() {
               </label> */}
               <div className="form-control">
                 <div className="form-icon">
-                  <HiOutlineLockClosed
-                    className="h-5 w-5"
-                    aria-hidden="true"
-                  />
+                  <HiOutlineLockClosed className="h-5 w-5" aria-hidden="true" />
                 </div>
                 <input
                   type="password"
@@ -113,42 +109,30 @@ function Signin() {
               </div>
               <p className="text-xs mt-3">
                 <span className="opacity-80">Forgot password? </span>
-                <Link
-                  to={"/forgot-password"}
-                  className="text-color-primary hover:underline"
-                >
+                <Link to={'/forgot-password'} className="text-color-primary hover:underline">
                   Get it back
                 </Link>
               </p>
-
             </div>
 
             <div className="input-group">
-              <button
-                type="submit"
-                className="btn btn-primary btn-xl btn-block"
-              >
+              <button type="submit" className="btn btn-primary btn-xl btn-block">
                 Sign in
               </button>
             </div>
-
           </form>
         </div>
         <div className="input-group mt-6">
           <p className="text-xs">
             <span className="opacity-80">Don't have an account yet? </span>
-            <Link
-              to={"/signup"}
-              className="text-color-primary hover:underline"
-            >
+            <Link to={'/signup'} className="text-color-primary hover:underline">
               Register one
             </Link>
           </p>
         </div>
       </div>
-
     </div>
-  );
+  )
 }
 
-export default Signin;
+export default Signin
