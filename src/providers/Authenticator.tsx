@@ -1,34 +1,34 @@
-import { onAuthStateChanged } from "firebase/auth";
-import { createContext, useEffect, useState } from "react";
-import { auth } from "../libs/firebase";
-import { useNavigate } from "react-router-dom"
+import { createContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { onAuthStateChanged } from 'firebase/auth'
+import { auth } from '~/libs/firebase'
 
 export interface IAuthenUser {
-  email: string | null;
-  displayName: string | null;
-  uid: string;
-  photoURL: string | null;
+  email: string | null
+  displayName: string | null
+  uid: string
+  photoURL: string | null
 }
 
 interface IAuthenContext {
-  checking: boolean;
-  user: IAuthenUser | null;
+  checking: boolean
+  user: IAuthenUser | null
 }
 
 export const AuthenContext = createContext<IAuthenContext>({
   checking: true,
   user: null,
-});
+})
 
 interface AuthenProviderProps {
-  children: JSX.Element | JSX.Element[];
+  children: JSX.Element | JSX.Element[]
 }
 export const AuthenProvider = ({ children }: AuthenProviderProps) => {
   const [authInfo, setAuthInfo] = useState<IAuthenContext>({
     checking: true,
     user: null,
   })
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -41,24 +41,22 @@ export const AuthenProvider = ({ children }: AuthenProviderProps) => {
             photoURL: user.photoURL,
             uid: user.uid,
           },
-        });
+        })
       } else {
         setAuthInfo({
           checking: false,
           user: null,
-        });
+        })
         console.log('VAO DAYYYY')
         navigate('/signin')
       }
-    });
+    })
 
     return () => {
-      unsubscribe();
-    };
-  // eslint-disable-next-line 
-  }, []);
+      unsubscribe()
+    }
+    // eslint-disable-next-line
+  }, [])
 
-  return (
-    <AuthenContext.Provider value={authInfo}>{children}</AuthenContext.Provider>
-  );
-};
+  return <AuthenContext.Provider value={authInfo}>{children}</AuthenContext.Provider>
+}

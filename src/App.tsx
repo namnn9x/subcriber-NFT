@@ -1,9 +1,9 @@
-import { Routes, Route } from "react-router-dom"
-import './App.css';
-import { AuthenProvider } from './providers/Authenticator';
-import Signin from "./containers/Signin";
-import Signout from "./containers/Signout";
-import Signup from "./containers/Signup";
+import { Routes, Route } from 'react-router-dom'
+import '~/App.css'
+import { AuthenProvider } from '~/providers/Authenticator'
+import Signin from '~/containers/Signin'
+import Signout from '~/containers/Signout'
+import Signup from '~/containers/Signup'
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
         </Routes>
       </AuthenProvider>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
