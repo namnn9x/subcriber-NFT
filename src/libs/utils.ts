@@ -1,25 +1,12 @@
 export const classNames = (...classes: string[]) => {
-  return classes.filter(Boolean).join(" ")
+  return classes.filter(Boolean).join(' ')
 }
 
 export const guidGenerator = () => {
   const S4 = function () {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
   }
-  return (
-    S4() +
-    S4() +
-    "-" +
-    S4() +
-    "-" +
-    S4() +
-    "-" +
-    S4() +
-    "-" +
-    S4() +
-    S4() +
-    S4()
-  )
+  return S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4()
 }
 
 export const timeStrToSec = (time: string) => {
@@ -31,15 +18,14 @@ export const timeStrToSec = (time: string) => {
   }
 
   const group = matched.groups
-  const type =
-    group.type === "h" ? 1000 * 60 * 60 : group.type === "m" ? 1000 * 60 : 1000
+  const type = group.type === 'h' ? 1000 * 60 * 60 : group.type === 'm' ? 1000 * 60 : 1000
   return parseInt(group.time, 10) * type
 }
 
 export const timeNumberToStr = (time: number) => {
   let t = time / 1000
 
-  if (t <= 0) return "0s"
+  if (t <= 0) return '0s'
 
   if (t <= 60) return `${t}s`
 
