@@ -1,0 +1,37 @@
+.sign-container {
+  @apply flex flex-col items-center justify-center;
+  height: calc(100vh - 2px);
+  background-color: var(--sign-bg-color);
+}
+
+.sign {
+  @apply p-8 bg-white shadow-xl w-96 dark:bg-gray-700;
+  @apply rounded-lg;
+  background-color: var(--sign-form-bg-color);
+}
+
+
+.sign-title {
+  @apply text-2xl font-bold;
+}
+
+.sign-desc {
+  @apply opacity-80 text-sm mt-3;
+}
+
+.input-group {
+  @apply mt-4;
+}
+
+.selected-avatar {
+  /* @apply outline-indigo-500; */
+  outline-color: var(--common-primary-color) !important;
+}
+
+.sign-form input {
+  @apply dark:bg-gray-800 dark:border-gray-800
+}
+
+.sign-form a {
+  @apply dark:text-yellow-400
+}
