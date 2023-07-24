@@ -1,13 +1,7 @@
-<<<<<<< HEAD
-import { updatePassword } from 'firebase/auth'
-import { doc, getDoc, setDoc, Timestamp, updateDoc } from 'firebase/firestore'
-import { auth, db } from '../libs/firebase'
-=======
 import { updatePassword } from "firebase/auth"
 import { doc, getDoc, setDoc, Timestamp, updateDoc } from "firebase/firestore"
 import { auth, db } from "../libs/firebase"
 import { Role } from "../containers/Signup"
->>>>>>> 27b0c89 (feat update rule)
 
 export enum EUserStatus {
   ACTIVE = 'ACTIVE',
