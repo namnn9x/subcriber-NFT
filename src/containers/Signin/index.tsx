@@ -58,7 +58,7 @@ function Signin() {
         <div className="sign sign-in">
           <h2 className="sign-title flex items-center gap-3">
             <HiKey className="h-7 w-7 rounded-full text-green-500 p-1.5 bg-green-100" />
-            <span>Welcome to subscribe NFT</span>
+            <span>Welcome to NFT ShareX</span>
           </h2>
           <p className="sign-desc">Please enter your email and password</p>
 
@@ -125,7 +125,7 @@ function Signin() {
         <div className="input-group mt-6">
           <p className="text-xs">
             <span className="opacity-80">Don't have an account yet? </span>
-            <Link to={'/signup'} className="text-color-primary hover:underline">
+            <Link to={'/sign-up'} className="text-color-primary hover:underline">
               Register one
             </Link>
           </p>

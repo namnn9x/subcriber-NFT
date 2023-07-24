@@ -32,7 +32,7 @@ export const AuthenProvider = ({ children }: AuthenProviderProps) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user && user.emailVerified) {
+      if (user) {
         setAuthInfo({
           checking: false,
           user: {
@@ -48,7 +48,7 @@ export const AuthenProvider = ({ children }: AuthenProviderProps) => {
           user: null,
         })
         console.log('VAO DAYYYY')
-        navigate('/signin')
+        navigate('/sign-in')
       }
     })
 
