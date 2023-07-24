@@ -1,8 +1,18 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [],
+  content: [
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    "./containers/**/*.{js,ts,jsx,tsx}",
+  ],
+  darkMode: "class",
+  mode: "jit",
   theme: {
-    extend: {},
+    extend: {
+      fontSize: {
+        "2xs": "0.65rem",
+      }
+    },
   },
-  plugins: [],
+
+  plugins: [require("@tailwindcss/typography"), require("@tailwindcss/forms")],
 }

@@ -80,7 +80,7 @@ function Signin() {
                   id="email"
                   onChange={formik.handleChange}
                   value={formik.values.email}
-                  className=""
+                  className="h-9"
                   placeholder="Email"
                 />
               </div>
