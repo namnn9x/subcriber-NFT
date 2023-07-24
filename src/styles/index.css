@@ -66,6 +66,10 @@ body {
   overflow: hidden;
 }
 
+.header {
+  background-color: var(--sign-form-bg-color);
+}
+
 .bg {
   background-color: var(--common-bg-color);
 }
@@ -74,9 +78,9 @@ body {
   background-color: var(--common-primary-color);
 }
 
-.bg-dark {
+/* .bg-dark {
   background-color: var(--common-dark-bg-color);
-}
+} */
 
 .bg-light {
   background-color: var(--common-light-bg-color);
@@ -114,7 +118,7 @@ body {
   background-color: var(--common-btn-bg-color);
 }
 
-.div-y > :not(:first-child) {
+.div-y> :not(:first-child) {
   border-top: 1px solid var(--common-border-light-color);
 }
 

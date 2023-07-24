@@ -8,10 +8,10 @@ function Signout() {
   useEffect(() => {
     signOut(auth).then(
       () => {
-        navigate('/signin')
+        navigate('/sign-in')
       },
       () => {
-        navigate('/signin')
+        navigate('/sign-in')
       },
     )
   }, [navigate])

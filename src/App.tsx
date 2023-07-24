@@ -4,7 +4,8 @@ import { AuthenProvider } from './providers/Authenticator'
 import Signin from './containers/Signin'
 import Signout from './containers/Signout'
 import Signup from './containers/Signup'
-import { EventForm } from './containers/EventForm'
+import { Layout } from './containers/Layout/layout'
+import Event from './containers/Layout/Event'
 
 function App() {
   return (
@@ -12,10 +13,12 @@ function App() {
       <AuthenProvider>
         <Routes>
           <Route>
-            <Route path="signin" element={<Signin />} />
-            <Route path="signout" element={<Signout />} />
-            <Route path="signup" element={<Signup />} />
-            <Route path="/" element={<EventForm />} />
+            <Route path="sign-in" element={<Signin />} />
+            <Route path="sign-out" element={<Signout />} />
+            <Route path="sign-up" element={<Signup />} />
+          </Route>
+          <Route path="/" element={<Layout/>}>
+            <Route path="/general-event" element={<Event/>} />
           </Route>
         </Routes>
       </AuthenProvider>

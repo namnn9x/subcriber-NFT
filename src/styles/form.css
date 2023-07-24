@@ -23,10 +23,9 @@
   border-color: var(--common-border-light-color);
 }
 
-
-.form-icon + input, 
-.form-icon + textarea{
-  @apply pl-10 h-10
+.form-icon + input,
+.form-icon + textarea {
+  @apply pl-10 h-10;
 }
 
 .form-control input:read-only {
@@ -34,7 +33,7 @@
 }
 
 .root-sidebar .inp,
-.root-sidebar .inp[type='text'] {
+.root-sidebar .inp[type="text"] {
   @apply py-1 pr-8 shadow-sm w-full block sm:text-sm rounded-md;
   background-color: var(--common-bg-color);
   border-color: var(--common-border-light-color);

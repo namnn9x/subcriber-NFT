@@ -240,7 +240,7 @@ And not have spaces`)
                 />
               </div>
             </div>
-            
+
             <p className="sign-desc"> Who are you ? </p>
             <div className="mt-4" >
               {roles.map((role, index) => (
@@ -273,7 +273,7 @@ And not have spaces`)
             <div className="input-group">
               <p className="text-xs">
                 <span className="opacity-80">Already have an account? </span>
-                <Link to={'/signin'} className="text-color-primary hover:underline">
+                <Link to={'/sign-in'} className="text-color-primary hover:underline">
                   Back to sign in
                 </Link>
               </p>
