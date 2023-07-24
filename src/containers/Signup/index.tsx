@@ -16,17 +16,43 @@ import { message } from '../../componens/message'
 import { useState } from 'react'
 import { isValidPassword } from '../../libs/password'
 
+
+export enum Role {
+  ARTIST = 'Artist',
+  USER = 'User'
+}
+
+const data = [
+  {
+    name: Role.ARTIST,
+    active: false
+  },
+  {
+    name: Role.USER,
+    active: true
+  }
+]
+
+interface IRole {
+  name: Role
+  active: boolean
+}
+
+
 function Signup() {
   const navigate = useNavigate()
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [roles, setRoles] = useState<IRole[]>(data)
+  const [currentRole, setCurrentRole] = useState<Role>(Role.USER)
 
   const formik = useFormik({
     initialValues: {
-      fullname: '',
-      email: '',
-      password: '',
-      address: '',
-      photoURL: '',
+      fullname: "",
+      email: "",
+      password: "",
+      address: "",
+      photoURL: "",
+      role: '',
       dateOfBirth: new Date().toDateString(),
     },
     onSubmit: (user) => {
@@ -59,16 +85,13 @@ And not have spaces`)
             email,
             address,
             photoURL,
+            role: currentRole,
             dateOfBirth: toTimestame(dateOfBirth),
           })
 
-          const res = await signIn(email, password)
-
+          await signIn(email, password)
           await verifyEmail()
 
-          if (res) {
-            navigate(`/email-verification?email=${email}`)
-          }
         })
         .catch((error) => {
           console.dir(error.code)
@@ -96,6 +119,18 @@ And not have spaces`)
         })
     },
   })
+
+  const handleChecked = (index: number) => {
+    const updatedRoles = roles.map((role, i) => {
+      if (i === index) {
+        setCurrentRole(role.name)
+        return { ...role, active: true };
+      } else {
+        return { ...role, active: false };
+      }
+    });
+    setRoles(updatedRoles);
+  };
 
   return (
     <div>
@@ -204,6 +239,29 @@ And not have spaces`)
                   value={formik.values.address}
                 />
               </div>
+            </div>
+            
+            <p className="sign-desc"> Who are you ? </p>
+            <div className="mt-4" >
+              {roles.map((role, index) => (
+                <div className="relative flex items-start mb-3">
+                <div className="flex h-6 items-center">
+                  <input
+                    id={`${role.name} + ${index}`}
+                    name={`${role.name}`}
+                    checked={role.active}
+                    onChange={() => handleChecked(index)}
+                    type="checkbox"
+                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                  />
+                </div>
+                <div className="ml-3 text-sm leading-6">
+                  <label htmlFor="comments" className="font-medium">
+                    {role.name}
+                  </label>
+                </div>
+              </div>
+              ))}
             </div>
 
             <div className="input-group">

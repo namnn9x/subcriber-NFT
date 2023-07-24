@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 import { updatePassword } from 'firebase/auth'
 import { doc, getDoc, setDoc, Timestamp, updateDoc } from 'firebase/firestore'
 import { auth, db } from '../libs/firebase'
+=======
+import { updatePassword } from "firebase/auth"
+import { doc, getDoc, setDoc, Timestamp, updateDoc } from "firebase/firestore"
+import { auth, db } from "../libs/firebase"
+import { Role } from "../containers/Signup"
+>>>>>>> 27b0c89 (feat update rule)
 
 export enum EUserStatus {
   ACTIVE = 'ACTIVE',
@@ -15,14 +22,15 @@ export interface IUser {
   address: string
   searchID?: string
   dateOfBirth: Timestamp
+  role: Role
   createdAt?: Timestamp
   status?: EUserStatus
 }
 
 export const addUser = async (user: IUser) => {
-  const { uid, address, email, dateOfBirth, fullname, photoURL } = user
 
-  await setDoc(doc(db, 'users', uid || ''), {
+  const { uid, address, email, dateOfBirth, fullname, photoURL, role } = user
+  await setDoc(doc(db, "users", uid || ""), {
     address,
     email,
     searchID: user.searchID,
@@ -30,7 +38,10 @@ export const addUser = async (user: IUser) => {
     dateOfBirth: dateOfBirth,
     fullname,
     photoURL,
+    role,
     status: EUserStatus.ACTIVE,
+  }).catch((err) => {
+    console.log(err, 'errrrrrrrrrrrrrr')
   })
 
   return 1
