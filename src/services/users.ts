@@ -35,7 +35,7 @@ export const addUser = async (user: IUser) => {
     role,
     status: EUserStatus.ACTIVE,
   }).catch((err) => {
-    console.log(err, 'errrrrrrrrrrrrrr')
+    console.log(`Create use ${err}`)
   })
 
   return 1
