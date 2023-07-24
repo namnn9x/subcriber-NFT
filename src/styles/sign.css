@@ -10,7 +10,6 @@
   background-color: var(--sign-form-bg-color);
 }
 
-
 .sign-title {
   @apply text-2xl font-bold;
 }
@@ -29,9 +28,9 @@
 }
 
 .sign-form input {
-  @apply dark:bg-gray-800 dark:border-gray-800
+  @apply dark:bg-gray-800 dark:border-gray-800;
 }
 
 .sign-form a {
-  @apply dark:text-yellow-400
+  @apply dark:text-yellow-400;
 }

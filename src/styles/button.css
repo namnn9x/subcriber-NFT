@@ -1,12 +1,12 @@
-.btn, 
-.btn[type="button"]{
+.btn,
+.btn[type='button'] {
   @apply inline-flex items-center justify-center px-2.5 py-1.5 border shadow-sm text-xs font-medium rounded;
   border-color: var(--common-border-light-color);
   background-color: var(--common-btn-bg-color);
   color: var(--common-semidark-text-color);
 }
 
-.btn:hover{
+.btn:hover {
   background-color: var(--common-btn-bg-hover-color);
   /* border-color: var(--common-btn-bg-hover-color); */
 }
@@ -17,7 +17,7 @@
   color: var(--common-primary-text-color);
 }
 
-.btn.btn-primary:hover{
+.btn.btn-primary:hover {
   background-color: var(--common-primary-hover-color);
 }
 
@@ -26,7 +26,7 @@
 }
 
 .btn.btn-sm {
-  @apply px-2 py-1; 
+  @apply px-2 py-1;
 }
 
 .btn.btn-lg {
@@ -49,11 +49,11 @@
   color: var(--common-semidark-text-color);
 }
 
-.kbd-btn.kbd-sm{
-  font-size: 0.625rem
+.kbd-btn.kbd-sm {
+  font-size: 0.625rem;
 }
 
-.kbd-btn:hover{
+.kbd-btn:hover {
   background-color: var(--common-btn-bg-hover-color);
   color: var(--common-text-color);
 }
