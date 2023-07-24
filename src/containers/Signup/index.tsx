@@ -12,7 +12,7 @@ import { signIn, signUp, verifyEmail } from '../../services/sign'
 import { addUser } from '../../services/users'
 import { toTimestame } from '../../libs/date'
 import { guidGenerator } from '../../libs/utils'
-import { message } from '../../componens/message'
+import { message } from '../../components/message'
 import { useState } from 'react'
 import { isValidPassword } from '../../libs/password'
 
