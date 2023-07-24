@@ -4,7 +4,7 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
     "./containers/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: "class",
+  // darkMode: "class",
   mode: "jit",
   theme: {
     extend: {
@@ -13,6 +13,8 @@ module.exports = {
       }
     },
   },
-
-  plugins: [require("@tailwindcss/typography"), require("@tailwindcss/forms")],
+  plugins:
+  [require("@tailwindcss/typography"),
+  require("@tailwindcss/forms")],
 }
+

@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { HiOutlineMail, HiOutlineLockClosed, HiKey } from 'react-icons/hi'
 import { signIn } from '../../services/sign'
 import { useFormik } from 'formik'
-import { message } from '../../componens/message'
+import { message } from '../../components/message'
 
 function Signin() {
   const navigate = useNavigate()
