@@ -9,7 +9,8 @@ export interface IEvent {
   coverImage: string,
   ticketLimit: number,
   nftReward: string,
-  eventTime: Timestamp,
+  createdBy?: string,
+  eventTime?: Timestamp,
   createdAt?: Timestamp
   updatedAt?: Timestamp
 }
@@ -18,6 +19,9 @@ const COLLECTION_NAME = 'events'
 
 export const addEvent = async (event: IEvent) => {
   const { uid, title, coverImage, description, eventTime, ticketLimit } = event
+
+  const getUser = localStorage.getItem('user')
+
   const docRef = await addDoc(collection(db, COLLECTION_NAME), {
     uid,
     title,
@@ -25,6 +29,7 @@ export const addEvent = async (event: IEvent) => {
     coverImage,
     eventTime,
     ticketLimit,
+    createdBy: getUser,
     createdAt: Timestamp.now(),
     updatedAt: Timestamp.now(),
   })
@@ -55,13 +60,47 @@ export const delEvent = async (id: string) => {
   }
 }
 
-export const getAllEvent = async (uid: string) => {
+export const getEventByUid = async (uid: string) => {
   try {
     const q = query(
       collection(db, COLLECTION_NAME),
       where("uid", "==", uid),
       orderBy("updatedAt", "desc")
     )
+    const pads = await getDocs(q)
+
+    if (pads.empty) {
+      return []
+    }
+
+    const eventList: IEvent[] = []
+    pads.forEach((pad) => {
+      const padData = pad.data() as IEvent
+      eventList.push({
+        uid: padData.uid,
+        id: pad.id,
+        title: padData.title,
+        description: padData.description,
+        createdAt: padData.createdAt,
+        updatedAt: padData.updatedAt,
+        coverImage: padData.coverImage,
+        nftReward: padData.nftReward,
+        eventTime: padData.eventTime,
+        ticketLimit: padData.ticketLimit,
+      })
+    })
+
+    return eventList
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+
+export const getAllEvent = async () => {
+  try {
+    const q = query(collection(db, COLLECTION_NAME))
+
     const pads = await getDocs(q)
 
     if (pads.empty) {

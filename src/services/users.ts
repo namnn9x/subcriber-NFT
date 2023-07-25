@@ -1,5 +1,5 @@
 import { updatePassword } from "firebase/auth"
-import { doc, getDoc, setDoc, Timestamp, updateDoc } from "firebase/firestore"
+import { collection, doc, getDoc, query, setDoc, Timestamp, updateDoc, where } from "firebase/firestore"
 import { auth, db } from "../libs/firebase"
 import { Role } from "../containers/Signup"
 
