@@ -1,0 +1,18 @@
+.create-event {
+  background-color: white;
+}
+
+.create-event-container {
+  @apply flex flex-col items-center justify-center;
+  height: calc(100vh - 2px);
+  background-color: var(--sign-bg-color);
+}
+
+.create-event .input-group :is(label) {
+  color: var(--sign-bg-color);
+}
+
+.create-event .input-group .form-control :is(input, textarea) {
+  background-color: white;
+  color: black;
+}
