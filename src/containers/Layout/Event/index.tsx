@@ -7,8 +7,8 @@ function Event() {
 
   return (
     <div className="event">
-      <EventCreate isOpen={isOpen} setIsOpen={setIsOpen} />
-      <BtnEventCreate onClick={() => setIsOpen(true)} />
+      {/* <EventCreate isOpen={isOpen} setIsOpen={setIsOpen} />
+      <BtnEventCreate onClick={() => setIsOpen(true)} /> */}
     </div>
   )
 }
