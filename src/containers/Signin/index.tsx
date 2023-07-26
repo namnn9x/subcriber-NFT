@@ -17,6 +17,7 @@ function Signin() {
         .then((user) => {
           if (user) {
             message.success('Signing in successfully ! 😎')
+            localStorage.setItem('user', JSON.stringify(user))
             navigate('/')
           } else {
             alert('username or password invalid')

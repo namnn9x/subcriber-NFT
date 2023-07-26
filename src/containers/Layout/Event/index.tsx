@@ -1,14 +1,16 @@
-import { EventCreate } from './EventCreate'
-import { BtnEventCreate } from './EventCreate/components/btnEventCreate'
-import { useState } from 'react'
+import { EventCreate } from "./EventCreate";
+import { BtnEventCreate } from "./EventCreate/components/btnEventCreate";
+import { useState } from "react";
+import { ListEvent } from "./ListEvent";
 
 function Event() {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   return (
     <div className="event">
-      {/* <EventCreate isOpen={isOpen} setIsOpen={setIsOpen} />
-      <BtnEventCreate onClick={() => setIsOpen(true)} /> */}
+      {/* <ListEvent/> */}
+      <EventCreate isOpen={isOpen} setIsOpen={setIsOpen} />
+      <BtnEventCreate onClick={() => setIsOpen(true)} />
     </div>
   )
 }
