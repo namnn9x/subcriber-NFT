@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const navigation = [
   { name: "General Event", href: "general-event" },
   { name: "My Event", href: "#" },
-  { name: "NFT", href: "#" },
+  { name: "NFT", href: "nfts" },
   { name: "Company", href: "#" },
 ];
 

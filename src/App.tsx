@@ -5,13 +5,14 @@ import Signin from './containers/Signin'
 import Signout from './containers/Signout'
 import Signup from './containers/Signup'
 import { Layout } from './containers/Layout/layout'
-import Event from './containers/Layout/Event'
+import Event from './containers/Event'
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react'
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
 import { clusterApiUrl } from '@solana/web3.js'
 import { useMemo } from 'react'
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets'
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
+import NFTList from './containers/NFTs'
 
 function App() {
   const network = WalletAdapterNetwork.Devnet
@@ -32,6 +33,7 @@ function App() {
                 </Route>
                 <Route path="/" element={<Layout />}>
                   <Route path="/general-event" element={<Event />} />
+                  <Route path="/nfts" element={<NFTList />} />
                 </Route>
               </Routes>
             </WalletModalProvider>

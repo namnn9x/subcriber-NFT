@@ -16,7 +16,8 @@ export const EventCreate = ({
 }) => {
   const navigate = useNavigate();
   const fileRef = useRef<HTMLInputElement | null>(null)
-
+  const [imgError, setImgError] = useState<string>('')
+  const defaultImage = '/statics/images/default-img.png'
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -26,11 +27,24 @@ export const EventCreate = ({
       ticketLimit: '',
       nftReward: '',
     },
-    onSubmit: ({}) => {},
+    onSubmit: ({}) => {
+    },
   })
+  const [picture, setPicture] = useState(!!formik.values.coverImage ? formik.values.coverImage : defaultImage)
 
   const handleClose = () => {
     setIsOpen(false)
+    setPicture(defaultImage)
+  }
+  const handleChangeImage = (e: any) => {
+    if (e.target.files[0].type === 'image/png') {
+      setPicture(URL.createObjectURL(e.target.files[0]))
+      formik.handleChange(e)
+      setImgError('')
+    } else {
+      setImgError('Please choose a image')
+      //Reset formik image
+    }
   }
 
   return (
@@ -47,7 +61,7 @@ export const EventCreate = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
                   Create your event
                 </Dialog.Title>
@@ -67,14 +81,15 @@ export const EventCreate = ({
                       Cover image
                     </label>
                     <div className="" onClick={() => fileRef.current?.click()}>
-                      <img src={'/statics/images/default-img.png'} alt="event-img" className='h-auto w-32 border rounded'/>
+                      <img src={picture} alt="event-img" className='h-auto w-full border rounded'/>
+                      {imgError && <span className='text-xs text-red-500'>{imgError}</span>}
                       <input
                         type="file"
                         ref={fileRef}
                         name="coverImage"
                         id="coverImage"
-                        onChange={formik.handleChange}
-                        value={formik.values.coverImage}
+                        onChange={handleChangeImage}
+                        // value={formik.values.coverImage}
                         placeholder="Event Image"
                         hidden
                       />
