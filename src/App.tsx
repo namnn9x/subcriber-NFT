@@ -18,15 +18,11 @@ function App() {
 
   const endpoint = useMemo(() => clusterApiUrl(network), [network])
 
-  const wallets = useMemo(
-    () => [new PhantomWalletAdapter(), new SolflareWalletAdapter()],
-    [network]
-  )
   return (
     <div className="App">
       <AuthenProvider>
         <ConnectionProvider endpoint={endpoint}>
-          <WalletProvider wallets={wallets}>
+          <WalletProvider wallets={[new PhantomWalletAdapter(), new SolflareWalletAdapter()]} autoConnect>
             <WalletModalProvider>
               <Routes>
                 <Route>
@@ -34,8 +30,8 @@ function App() {
                   <Route path="sign-out" element={<Signout />} />
                   <Route path="sign-up" element={<Signup />} />
                 </Route>
-                <Route path="/" element={<Layout/>}>
-                  <Route path="/general-event" element={<Event/>} />
+                <Route path="/" element={<Layout />}>
+                  <Route path="/general-event" element={<Event />} />
                 </Route>
               </Routes>
             </WalletModalProvider>

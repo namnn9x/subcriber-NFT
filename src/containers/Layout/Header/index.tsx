@@ -12,8 +12,10 @@ export const Header = () => {
       >
         <Icon/>
         <Menu/>
-        <User/>
-        <Wallet/>
+        <div className="flex gap-5 items-center">
+          <User/>
+          <Wallet/>
+        </div>
       </nav>
     </header>
   );

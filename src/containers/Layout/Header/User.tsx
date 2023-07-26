@@ -19,10 +19,9 @@ export const User = () => {
         <Popover.Button>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             <a href="#" className="text-sm font-semibold leading-6 text-gray-300 flex items-center">
-              <p>Nam NN</p>
               <img
                 src="https://tecdn.b-cdn.net/img/new/avatars/5.webp"
-                className="mx-auto w-10 rounded-lg ml-1"
+                className="mx-auto w-10 rounded-lg ml-1 pt-1"
                 alt="Avatar"
               />
             </a>
