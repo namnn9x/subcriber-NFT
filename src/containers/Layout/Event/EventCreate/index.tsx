@@ -16,8 +16,6 @@ export const EventCreate = ({
 }) => {
   const navigate = useNavigate();
   const fileRef = useRef<HTMLInputElement | null>(null)
-  // const [imagePreview, setImagePreview] = useState<string>()
-  // const [imageFile, setImageFile] = useState<File>()
 
   const formik = useFormik({
     initialValues: {
@@ -35,35 +33,9 @@ export const EventCreate = ({
     setIsOpen(false)
   }
 
-  // handle image
-  // const onChangePicture = (e: any) => {
-  //   const file: File = e.target.files[0]
-
-  //   const reader = new FileReader()
-  //   reader.onloadend = (readerEvent: any) => {
-  //     setImagePreview(readerEvent.target.result)
-  //     setImageFile(file)
-  //   }
-  //   if (file) {
-  //     reader.readAsDataURL(file)
-  //   }
-  // }
-
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={handleClose}>
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
-        </Transition.Child>
-
         <div className="fixed inset-0 overflow-y-auto">
           <div className="flex min-h-full items-center justify-center p-4 text-center">
             <Transition.Child

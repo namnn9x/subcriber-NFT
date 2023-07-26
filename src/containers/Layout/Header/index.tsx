@@ -1,6 +1,7 @@
 import { Icon } from "./Icon";
 import { Menu } from "./Menu";
 import { User } from "./User";
+import { Wallet } from "./Wallet";
 
 export const Header = () => {
   return (
@@ -11,7 +12,10 @@ export const Header = () => {
       >
         <Icon/>
         <Menu/>
-        <User/>
+        <div className="flex gap-5 items-center">
+          <User/>
+          <Wallet/>
+        </div>
       </nav>
     </header>
   );
