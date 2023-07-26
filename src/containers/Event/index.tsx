@@ -3,6 +3,7 @@ import { BtnEventCreate } from "./EventCreate/components/btnEventCreate";
 import { useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+import { ListEvent } from "./ListEvent";
 
 function Event() {
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -19,6 +20,7 @@ function Event() {
 
   return (
     <div className="event">
+      <ListEvent/>
       <EventCreate isOpen={isOpen} setIsOpen={setIsOpen} />
       <BtnEventCreate onClick={handleOpen} />
     </div>

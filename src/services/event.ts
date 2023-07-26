@@ -3,24 +3,22 @@ import { db } from "../libs/firebase"
 
 export interface IEvent {
   uid: string
-  id: string
+  id?: string
   title: string
   description: string,
   coverImage: string,
   ticketLimit: number,
   nftReward: string,
   createdBy?: string,
-  eventTime?: Timestamp,
-  createdAt?: Timestamp
-  updatedAt?: Timestamp
+  eventTime?: Timestamp | null,
+  createdAt?: Timestamp | null
+  updatedAt?: Timestamp | null
 }
 
 const COLLECTION_NAME = 'events'
 
 export const addEvent = async (event: IEvent) => {
-  const { uid, title, coverImage, description, eventTime, ticketLimit } = event
-
-  const getUser = localStorage.getItem('user')
+  const { uid, title, coverImage, description, eventTime, ticketLimit, createdBy } = event
 
   const docRef = await addDoc(collection(db, COLLECTION_NAME), {
     uid,
@@ -29,12 +27,13 @@ export const addEvent = async (event: IEvent) => {
     coverImage,
     eventTime,
     ticketLimit,
-    createdBy: getUser,
+    createdBy,
     createdAt: Timestamp.now(),
     updatedAt: Timestamp.now(),
   })
 
-  return docRef.id
+  const newDoc = await getDoc(doc(db, COLLECTION_NAME, docRef.id));
+  return newDoc.data()
 
 }
 
@@ -115,6 +114,7 @@ export const getAllEvent = async () => {
         id: pad.id,
         title: padData.title,
         description: padData.description,
+        createdBy: padData.createdBy,
         createdAt: padData.createdAt,
         updatedAt: padData.updatedAt,
         coverImage: padData.coverImage,

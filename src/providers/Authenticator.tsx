@@ -47,7 +47,6 @@ export const AuthenProvider = ({ children }: AuthenProviderProps) => {
           checking: false,
           user: null,
         })
-        console.log('VAO DAYYYY')
         navigate('/sign-in')
       }
     })
