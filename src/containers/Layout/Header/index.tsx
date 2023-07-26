@@ -1,6 +1,7 @@
 import { Icon } from "./Icon";
 import { Menu } from "./Menu";
 import { User } from "./User";
+import { Wallet } from "./Wallet";
 
 export const Header = () => {
   return (
@@ -12,6 +13,7 @@ export const Header = () => {
         <Icon/>
         <Menu/>
         <User/>
+        <Wallet/>
       </nav>
     </header>
   );

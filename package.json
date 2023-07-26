@@ -4,6 +4,11 @@
   "private": true,
   "dependencies": {
     "@headlessui/react": "^1.7.15",
+    "@solana/wallet-adapter-base": "^0.9.22",
+    "@solana/wallet-adapter-react": "^0.15.33",
+    "@solana/wallet-adapter-react-ui": "^0.9.32",
+    "@solana/wallet-adapter-wallets": "^0.19.19",
+    "@solana/web3.js": "^1.78.0",
     "@tailwindcss/forms": "^0.5.4",
     "@tailwindcss/typography": "^0.5.9",
     "@testing-library/jest-dom": "^5.17.0",
@@ -27,7 +32,7 @@
     "zustand": "^4.3.9"
   },
   "scripts": {
-    "start": "set PORT=4000 &&  react-scripts start",
+    "start": "PORT=3001 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
