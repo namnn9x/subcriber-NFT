@@ -8,7 +8,7 @@ const options = [
   },
   {
     name: 'Log Out',
-    href: '##',
+    href: '/sign-in',
   },
 ]
 

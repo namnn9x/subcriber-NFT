@@ -116,6 +116,7 @@ And not have spaces`)
         })
         .finally(() => {
           setLoading(false)
+          navigate('/sign-in')
         })
     },
   })
@@ -158,7 +159,7 @@ And not have spaces`)
                   onChange={formik.handleChange}
                   value={formik.values.fullname}
                   className=""
-                  placeholder="Fullname"
+                  placeholder="Full name"
                 />
               </div>
             </div>
