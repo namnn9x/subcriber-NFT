@@ -1,30 +1,8 @@
-import { EventCreate } from "./EventCreate";
-import { BtnEventCreate } from "./EventCreate/components/btnEventCreate";
-import { useState } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+import React from "react";
 import { ListEvent } from "./ListEvent";
 
-function Event() {
-  const [isOpen, setIsOpen] = useState<boolean>(false)
-  const { connected } = useWallet()
-  const { setVisible} = useWalletModal()
-
-  const handleOpen = () => {
-    if (!connected) {
-      setVisible(true)
-    } else {
-      setIsOpen(true)
-    }
-  }
-
-  return (
-    <div className="event">
-      <ListEvent/>
-      <EventCreate isOpen={isOpen} setIsOpen={setIsOpen} />
-      <BtnEventCreate onClick={handleOpen} />
-    </div>
-  )
+const EventList = () => {
+    return <ListEvent/>
 }
 
-export default Event
+export default EventList

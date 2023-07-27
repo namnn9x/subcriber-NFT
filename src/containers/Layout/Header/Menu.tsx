@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 
 const navigation = [
-  { name: "General Event", href: "general-event" },
+  { name: "Event List", href: "general-event" },
   { name: "My Event", href: "#" },
   { name: "NFT", href: "nfts" },
   { name: "Company", href: "#" },
