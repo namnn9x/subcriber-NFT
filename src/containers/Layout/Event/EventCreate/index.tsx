@@ -82,7 +82,7 @@ export const EventCreate = ({
     <Modal visible={isOpen} setVisible={setIsOpen}>
       <form className="create-event" onSubmit={formik.handleSubmit}>
         <h3 className="text-lg leading-6 pb-4 border-bottom dark:border-gray-700">
-         Create your event
+        Create your event
         </h3>
         <div className="">
           <label

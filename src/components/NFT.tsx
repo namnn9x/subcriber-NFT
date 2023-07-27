@@ -1,6 +1,7 @@
-import { INFT } from "../containers/NFTs"
+// import { INFT } from "../containers/NFTs"
+import { Nft } from "@shyft-to/js"
 
-const NFTCard = (nft: INFT) => {
+const NFTCard = (nft: Nft) => {
   return (
     <div className="block rounded-lg bg-white dark:bg-neutral-700">
       <div className="relative overflow-hidden bg-cover bg-no-repeat" data-te-ripple-init data-te-ripple-color="light">
