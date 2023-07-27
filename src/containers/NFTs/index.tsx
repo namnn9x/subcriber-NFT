@@ -46,7 +46,7 @@ function NFTList() {
           owner: publicKey,
           network: Network.Devnet,
         })
-        setNfts(nfts)
+        // setNfts(nfts)
       } catch (error: any) {
         // throw new Error(error)
       } finally {
@@ -75,7 +75,7 @@ function NFTList() {
         <>{nfts.map((nft: INFT, index:number) => {
           return (
             <div key={index}>
-              <NFTCard nft={nft}/>
+              {/* <NFTCard nft={nft}/> */}
             </div>
           )
         })}</>

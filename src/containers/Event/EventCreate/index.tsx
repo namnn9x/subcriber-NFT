@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import { storage } from "../../../../libs/firebase";
+import { storage } from "../../../libs/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import "./styles/index.css";
-import Modal from "../../../../components/Modal";
-import { guidGenerator } from "../../../../libs/utils";
-import { message } from "../../../../components/message";
-import { IEvent, addEvent } from "../../../../services/event";
+import Modal from "../../../components/Modal";
+import { guidGenerator } from "../../../libs/utils";
+import { message } from "../../../components/message";
+import { IEvent, addEvent } from "../../../services/event";
 import { Timestamp } from "firebase/firestore";
-import { useUserStore } from "../../../../store/user";
-import { useEventStore } from "../../../../store/event";
+import { useUserStore } from "../../../store/user";
+import { useEventStore } from "../../../store/event";
 
 export const EventCreate = ({
   isOpen,
