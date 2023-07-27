@@ -1,37 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { WalletMultiButton, useWalletModal } from '@solana/wallet-adapter-react-ui'
-import { ShyftSdk, Network } from '@shyft-to/js'
-import NFTCard from '../../components/NFT'
-
-export interface INFT {
-  animation_url?: string
-  attributes?: any
-  attributes_array ?: []
-  cached_animation_url ?: string
-  cached_image_uri?: string
-  collection?: string
-  creators?: string[]
-  description?: string
-  external_url?: string
-  files?: any
-  image_uri: string
-  is_loaded_metadata?: boolean
-  is_mutable?: boolean
-  metadata_uri?: string
-  mint?: string
-  name?: string
-  owner?: string
-  primary_sale_happened?: boolean
-  royalty?: number
-  symbol?: string
-  token_standard?:string
-  update_authority?: string
-}
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
+import { ShyftSdk, Network, Nft } from '@shyft-to/js'
+import { HiGift } from 'react-icons/hi'
+import { LuPartyPopper } from 'react-icons/lu'
+import { BtnEventCreate } from '../Event/EventCreate/components/btnEventCreate'
+import { AiOutlinePlus } from 'react-icons/ai'
 
 function NFTList() {
   const [loading, setLoading] = useState<boolean>(false)
-  const [nfts, setNfts] = useState<INFT[]>([])
+  const [nfts, setNfts] = useState<Nft[] | null>(null)
 
   const { connected, publicKey } = useWallet()
 
@@ -46,7 +24,7 @@ function NFTList() {
           owner: publicKey,
           network: Network.Devnet,
         })
-        // setNfts(nfts)
+        setNfts(nfts)
       } catch (error: any) {
         // throw new Error(error)
       } finally {
@@ -57,29 +35,58 @@ function NFTList() {
     if (publicKey) {
       fetchNFT(publicKey.toBase58())
     }
-  }, [publicKey, ])
+  }, [publicKey])
 
-
-  console.log('=====================================',nfts)
-  // THAY BANG LIB USENFT
   return (
-    <div className=''>
+    <div className={`container mx-auto px-3 py-5`}>
+      <h1 className="text-4xl pb-4 font-bold tracking-tight">List NFT</h1>
       {!connected ? (
         <>
           <div>
-            <div className='mt-72 pb-5'>Connect the wallet to continue</div>
+            <div className="mt-72 pb-5">Connect the wallet to continue</div>
             <WalletMultiButton />
           </div>
         </>
-      ):
-        <>{nfts.map((nft: INFT, index:number) => {
-          return (
-            <div key={index}>
-              {/* <NFTCard nft={nft}/> */}
+      ) : (
+        <>
+          {nfts && nfts.length ? (
+            <div className="grid grid-cols-5 gap-8">
+              {nfts.map((nft, index: number) => (
+                <div className="bg-white rounded-lg group">
+                  <a href="general-event">
+                    <div className="aspect-h-1 aspect-w-1 w-full h-100 overflow-hidden rounded-l xl:aspect-h-8 xl:aspect-w-7">
+                      <img
+                        src={nft.image_uri}
+                        alt={index.toString()}
+                        loading="lazy"
+                        className="h-auto w-72 object-cover object-center group-hover:scale-105 ease-in duration-200"
+                      />
+                      <p className="mt-4 text-lg font-medium text-gray-900">{nft.name}</p>
+                      <h3 className="mt-1 text-sm text-gray-700">{nft.description}</h3>
+                    </div>
+
+                    <div className="mt-3 py-2 bg-blue-400 rounded-b-lg invisible group-hover:visible ease-up duration-100">
+                      <div className="flex flex-row text-white font-bold items-center justify-center group-hover:ease-in scale-100">
+                        <LuPartyPopper />
+                        <span>Create event use NFT as reward </span>
+                        <HiGift />
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              ))}
             </div>
-          )
-        })}</>
-      }
+          ) : (
+            <div className="pb-5 mt-72">
+              <div className="">You don't have any NFTs.</div>
+              <button className="btn btn-primary items-center mt-3">
+                <span className="font-bold text-base">Create one</span>
+                <AiOutlinePlus className="w-3 h-3 ml-1" />
+              </button>
+            </div>
+          )}
+        </>
+      )}
     </div>
   )
 }
