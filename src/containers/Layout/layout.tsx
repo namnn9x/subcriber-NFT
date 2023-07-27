@@ -5,6 +5,7 @@ import { useAuth } from '../../hooks'
 import { getUser } from '../../services/users'
 import { useEffect } from 'react'
 import { useUserStore } from '../../store/user'
+import EventLayout from './Event'
 
 export const Layout = () => {
   const { user } = useAuth()
@@ -29,6 +30,7 @@ export const Layout = () => {
       <Header />
       <main>
         <Outlet />
+        {user && <EventLayout/>}
       </main>
       <Footer />
     </div>
