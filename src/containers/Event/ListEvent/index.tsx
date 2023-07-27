@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { IEvent } from "../../../../services/event";
-import { useEventStore } from "../../../../store/event";
+import { IEvent } from "../../../services/event";
+import { useEventStore } from "../../../store/event";
 
 const getAllEventIDs = (events: IEvent[]) => {
   return events.map((item) => item.id);
