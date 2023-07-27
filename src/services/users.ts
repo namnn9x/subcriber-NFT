@@ -25,6 +25,7 @@ export const addUser = async (user: IUser) => {
 
   const { uid, address, email, dateOfBirth, fullname, photoURL, role } = user
   await setDoc(doc(db, "users", uid || ""), {
+    uid,
     address,
     email,
     searchID: user.searchID,

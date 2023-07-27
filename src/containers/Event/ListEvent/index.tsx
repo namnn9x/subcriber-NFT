@@ -5,31 +5,21 @@ import { HiGift } from "react-icons/hi";
 import { TbGiftOff } from "react-icons/tb";
 import { IUser, getAllArtists } from "../../../services/users";
 
-const getAllEventIDs = (events: IEvent[]) => {
-  return events.map((event) => ({
-    id: event.id,
-    fullName: event.createdBy
-  }))
-};
-
-const displayedFullNames: string[] = [];
-
 export const ListEvent = () => {
   const { events, setEventAll } = useEventStore();
   const [ artistAll, setArtistAll ] = useState<IUser[]>([])
-  const eventIds = useMemo(() => {
-    return getAllEventIDs(events);
-  }, [events]);
+
   useEffect(() => {
     void (async () => {
       const userArtist = await getAllArtists();
+      console.log(userArtist, 'userArtist')
       const events = await getAllEvent();
       if (!events || !userArtist ) return;
       setEventAll(events);
       setArtistAll(userArtist)
     })();
   }, []);
-
+  
   return (
     <div className="container mx-auto scroll-smooth h-full">
       <div>
