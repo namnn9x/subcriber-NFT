@@ -7,7 +7,7 @@ export const BtnEventCreate = ({
   onClick: () => void
 }) => {
   return (
-    <div className="input-group fixed bottom-40 right-20 flex-col" onClick={onClick}>
+    <div className="input-group fixed bottom-32 right-20 flex-col" onClick={onClick}>
       <div className='flex relative flex-col items-center'>
       <button className="btn btn-primary rounded-full w-16 h-16 pt-2 flex justify-center">
         <HiCalendar className="h-8 w-8"/>
