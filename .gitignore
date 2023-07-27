@@ -18,6 +18,10 @@
 .env.test.local
 .env.production.local
 
+yarn.lock
+.vscode
+.prettierrc.json
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
