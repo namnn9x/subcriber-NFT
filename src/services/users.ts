@@ -1,5 +1,5 @@
 import { updatePassword } from "firebase/auth"
-import { collection, doc, getDoc, query, setDoc, Timestamp, updateDoc, where } from "firebase/firestore"
+import { collection, doc, getDoc, getDocs, query, setDoc, Timestamp, updateDoc, where } from "firebase/firestore"
 import { auth, db } from "../libs/firebase"
 import { Role } from "../containers/Signup"
 
@@ -94,3 +94,21 @@ export const getUser = async (uid: string): Promise<IUser | null> => {
     return null
   }
 }
+
+export const getAllArtists = async (): Promise<IUser[] | null> => {
+  try {
+    const usersRef = collection(db, 'users');
+
+    const q = query(usersRef, where('role', '==', 'Artist'));
+
+    const querySnapshot = await getDocs(q);
+
+    const artists: IUser[] = querySnapshot.docs.map((doc) => doc.data() as IUser);
+
+    return artists;
+  } catch (error) {
+    console.error('Error getting artists:', error);
+    return null;
+  }
+};
+
