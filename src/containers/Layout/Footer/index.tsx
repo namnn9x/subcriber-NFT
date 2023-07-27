@@ -1,6 +1,6 @@
 export const Footer = () => {
   return (
-    <footer className="footer header mt-auto text-center text-white">
+    <footer className="w-full h-30 header text-center text-white sticky bottom-0">
       <div className="pt-9">
         <div className="mb-5 flex justify-center">
           <a href="#!" className="mr-9">

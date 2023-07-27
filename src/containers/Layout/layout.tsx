@@ -25,7 +25,7 @@ export const Layout = () => {
     // eslint-disable-next-line
   }, [user?.uid])
   return (
-    <div className=''>
+    <div className='flex flex-col min-h-screen'>
       <Header />
       <main>
         <Outlet />
