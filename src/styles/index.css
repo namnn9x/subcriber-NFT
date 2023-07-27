@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply h-screen overflow-hidden;
+  @apply h-screen;
 
   --common-text-color: rgb(209 213 219);
   --common-semidark-text-color: rgb(160 167 177);
