@@ -139,6 +139,33 @@ body {
   @apply bg-indigo-500 text-white;
 }
 
+.modal {
+  @apply shadow-lg rounded-lg relative text-left overflow-hidden shadow-xl transform transition-all ;
+  background-color: var(--modal-bg-color);
+  border: 1px solid var(--common-dark-bg-color);
+  color: var(--common-text-color);
+}
+
+.before-bg-file:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: var(--bg);
+  background-size: contain;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+.before-bg-file:hover:before {
+  opacity: 0.1;
+}
+
+
 @import url('./sign.css');
 @import url('./form.css');
 @import url('./button.css');
