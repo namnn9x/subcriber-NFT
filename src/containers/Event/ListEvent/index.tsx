@@ -4,24 +4,34 @@ import { useEventStore } from "../../../store/event";
 import { HiGift } from "react-icons/hi";
 import { TbGiftOff } from "react-icons/tb";
 import { IUser, getAllArtists } from "../../../services/users";
+import LoadingPage from "../../../components/Loading";
 
 export const ListEvent = () => {
   const { events, setEventAll } = useEventStore();
+  const [loading, setLoading] = useState<boolean>(false)
   const [ artistAll, setArtistAll ] = useState<IUser[]>([])
 
   useEffect(() => {
     void (async () => {
-      const userArtist = await getAllArtists();
-      console.log(userArtist, 'userArtist')
-      const events = await getAllEvent();
-      if (!events || !userArtist ) return;
-      setEventAll(events);
-      setArtistAll(userArtist)
+      try {
+        setLoading(true)
+        const userArtist = await getAllArtists();
+        console.log(userArtist, 'userArtist')
+        const events = await getAllEvent();
+        if (!events || !userArtist ) return;
+        setEventAll(events);
+        setArtistAll(userArtist)  
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
   
   return (
     <div className="container mx-auto scroll-smooth h-full">
+     {loading ? <LoadingPage/> :  
       <div>
         {artistAll.map((user) => (
           <div>
@@ -61,7 +71,7 @@ export const ListEvent = () => {
             </div>
           </div>
         ))}
-      </div>
+      </div>}
     </div>
   )
 };

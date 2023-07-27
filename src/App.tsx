@@ -5,7 +5,7 @@ import Signin from './containers/Signin'
 import Signout from './containers/Signout'
 import Signup from './containers/Signup'
 import { Layout } from './containers/Layout/layout'
-import Event from './containers/Event'
+import EventList from './containers/Event'
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react'
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
 import { clusterApiUrl } from '@solana/web3.js'
@@ -23,7 +23,7 @@ function App() {
     <div className="App">
       <AuthenProvider>
         <ConnectionProvider endpoint={endpoint}>
-          <WalletProvider wallets={[new PhantomWalletAdapter(), new SolflareWalletAdapter()]} autoConnect>
+          <WalletProvider wallets={[new PhantomWalletAdapter()]} autoConnect>
             <WalletModalProvider>
               <Routes>
                 <Route>
@@ -32,7 +32,7 @@ function App() {
                   <Route path="sign-up" element={<Signup />} />
                 </Route>
                 <Route path="/" element={<Layout />}>
-                  <Route path="/general-event" element={<Event />} />
+                  <Route path="/general-event" element={<EventList />} />
                   <Route path="/nfts" element={<NFTList />} />
                 </Route>
               </Routes>
