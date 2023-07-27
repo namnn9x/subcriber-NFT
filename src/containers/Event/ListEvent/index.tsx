@@ -28,16 +28,18 @@ export const ListEvent = () => {
       }
     })();
   }, []);
-  
+
   return (
     <div className="container mx-auto scroll-smooth h-full font-semibold">
      {loading ? <LoadingPage/> :  
       <div>
         {artistAll.map((user) => (
-          <div className="grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-1 gap-y-8">
-            <div className="text-left text-xl mt-10">
-              Artist: {user.fullname || "Cleopatra"}
-            </div>
+          <div className="grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-1 gap-y-8 mb-5">
+            { events.find((event) => event["uid"] === user.uid) &&
+              <div className="text-left text-xl mt-10">
+              Artist: {user.fullname || ""
+              }
+            </div>}
             <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-1 gap-x-10 gap-y-4">
               {events.map((event, index) => {
                 if (user.uid !== event.uid) return null;
