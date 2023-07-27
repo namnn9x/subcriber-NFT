@@ -1,211 +1,214 @@
-import { Fragment, useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { Dialog, Transition } from '@headlessui/react'
-import { useFormik } from 'formik'
-import {
-  HiX
-} from 'react-icons/hi'
-import './styles/index.css'
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import { storage } from "../../../../libs/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import "./styles/index.css";
+import Modal from "../../../../components/Modal";
+import { guidGenerator } from "../../../../libs/utils";
+import { message } from "../../../../components/message";
+import { IEvent, addEvent } from "../../../../services/event";
+import { Timestamp } from "firebase/firestore";
+import { useUserStore } from "../../../../store/user";
+import { useEventStore } from "../../../../store/event";
 
 export const EventCreate = ({
   isOpen,
   setIsOpen,
 }: {
-  isOpen: boolean
-  setIsOpen: (value: boolean) => void
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const navigate = useNavigate();
-  const fileRef = useRef<HTMLInputElement | null>(null)
-  const [imgError, setImgError] = useState<string>('')
-  const defaultImage = '/statics/images/default-img.png'
+  const [file, setFile] = useState<any>();
+  const inputFileRef = useRef<HTMLInputElement>(null);
+  const [blob, setBlob] = useState<string>('');
+  const { user } = useUserStore()
+  const { setEvent } = useEventStore()
   const formik = useFormik({
     initialValues: {
-      title: '',
-      coverImage: '',
-      description: '',
-      eventTime: '',
-      ticketLimit: '',
-      nftReward: '',
+      uid: "",
+      title: "",
+      coverImage: "",
+      description: "",
+      createdBy: '',
+      eventTime: new Date().toDateString(),
+      ticketLimit: 0,
+      nftReward: "",
     },
-    onSubmit: ({}) => {
-    },
-  })
-  const [picture, setPicture] = useState(!!formik.values.coverImage ? formik.values.coverImage : defaultImage)
+    onSubmit: async (event) => {
+      // set image to store firebase
+      const imageRef = ref(storage, `image/${file?.name + guidGenerator()}`)
+      const resImage = await uploadBytes(imageRef, file)
+      const imageURL = await getDownloadURL(resImage.ref)
 
-  const handleClose = () => {
-    setIsOpen(false)
-    setPicture(defaultImage)
-  }
-  const handleChangeImage = (e: any) => {
-    if (e.target.files[0].type === 'image/png') {
-      setPicture(URL.createObjectURL(e.target.files[0]))
-      formik.handleChange(e)
-      setImgError('')
-    } else {
-      setImgError('Please choose a image')
-      //Reset formik image
+      message.success('Upload image successfully')
+
+      const getTime = new Date(event.eventTime).getTime()
+      const newEvent = {
+        ...event,
+        coverImage: imageURL,
+        eventTime: Timestamp.fromMillis(getTime),
+        uid: user.uid || '',
+        createdBy: user.fullname
+      }
+      const resEvent = await addEvent(newEvent);
+      setEvent(resEvent as IEvent)
+      setIsOpen(false)
+    },
+  });
+
+  const onFileChange = (e: any) => {
+    const newFile = e.target.files[0];
+    if (newFile) {
+      if (!newFile.type.match("image.*")) {
+      } else {
+        inputFileRef.current && (inputFileRef.current.value = "");
+        setFile(newFile);
+      }
     }
-  }
+  };
+
+  useEffect(() => {
+    if (file) {
+      setBlob(URL.createObjectURL(file));
+    }
+
+    return () => {
+      URL.revokeObjectURL(blob);
+    };
+  }, [file]);
 
   return (
-    <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={handleClose}>
-        <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
-              <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                  Create your event
-                </Dialog.Title>
-                <button
-                  type="button"
-                  className="absolute right-4 top-4 text-gray-400 hover:text-gray-500 sm:right-6 sm:top-8 md:right-6 md:top-6 lg:right-8 lg:top-8"
-                  >
-                  <HiX onClick={handleClose}/>
-                </button>
+    <Modal visible={isOpen} setVisible={setIsOpen}>
+      <form className="create-event" onSubmit={formik.handleSubmit}>
+        <h3 className="text-lg leading-6 pb-4 border-bottom dark:border-gray-700">
+         Create your event
+        </h3>
+        <div className="">
+          <label
+            htmlFor="coverImage"
+            className="block text-start text-sm font-medium my-2"
+          >
+            Cover image
+          </label>
+          <div
+            style={
+              {
+                "--bg": `url(${blob})`,
+              } as React.CSSProperties
+            }
+            onClick={() => inputFileRef.current && inputFileRef.current.click()}
+            className={`${
+              blob ? "before-bg-file" : ""
+            } relative p-6 cursor-pointer h-[200px] w-full mx-auto flex flex-col items-center border-2 border-dashed border-blue-600 text-base leading-[1.6] select-none`}
+          >
+            <input
+              ref={inputFileRef}
+              type="file"
+              onChange={onFileChange}
+              accept="image/*"
+              hidden
+            />
+            <p className="text-sm font-medium text-start my-2">
+              Click to select photo
+            </p>
+            <p className="text-center text-[#F05123] pointer-events-none">
 
-                <div className="mt-2">
-                  <p className="text-sm text-gray-500">Please fill the form to create your event</p>
-                </div>
-                <form className="create-event" onSubmit={formik.handleSubmit}>
-                  <div className="input-group">
-                    <label htmlFor="coverImage" className="block text-start text-sm font-medium ">
-                      Cover image
-                    </label>
-                    <div className="" onClick={() => fileRef.current?.click()}>
-                      <img src={picture} alt="event-img" className='h-auto w-full border rounded'/>
-                      {imgError && <span className='text-xs text-red-500'>{imgError}</span>}
-                      <input
-                        type="file"
-                        ref={fileRef}
-                        name="coverImage"
-                        id="coverImage"
-                        onChange={handleChangeImage}
-                        // value={formik.values.coverImage}
-                        placeholder="Event Image"
-                        hidden
-                      />
-                    </div>
-                  </div>
-                  <div className="input-group">
-                    <label htmlFor="event_name" className="block text-start text-sm font-medium ">
-                      Event name
-                    </label>
-                    <div className="form-control">
-                      <input
-                        type="text"
-                        name="title"
-                        id="title"
-                        onChange={formik.handleChange}
-                        value={formik.values.title}
-                        className=""
-                        placeholder="Event name"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="input-group">
-                    <label htmlFor="description" className="block text-sm font-medium text-start">
-                      Description
-                    </label>
-                    <div className="form-control">
-                      <textarea
-                        name="description"
-                        id="description"
-                        onChange={formik.handleChange}
-                        value={formik.values.description}
-                        className=""
-                        placeholder="Description your event"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="input-group">
-                    <label htmlFor="eventTime" className="block text-start text-sm font-medium ">
-                      Event time
-                    </label>
-                    <div className="form-control">
-                      <input
-                        type="date"
-                        name="eventTime"
-                        id="eventTime"
-                        onChange={formik.handleChange}
-                        value={formik.values.eventTime}
-                        className=""
-                        placeholder="Event time"
-                      />
-                    </div>
-                  </div>
-                  <div className="input-group">
-                    <label htmlFor="ticketLimit" className="block text-start text-sm font-medium ">
-                      Ticket limitation
-                    </label>
-                    <div className="form-control">
-                      <input
-                        type="number"
-                        name="ticketLimit"
-                        id="ticketLimit"
-                        onChange={formik.handleChange}
-                        value={formik.values.ticketLimit}
-                        className=""
-                        placeholder="Ticket limit"
-                      />
-                    </div>
-                  </div>
-                  <div className="input-group">
-                    <label htmlFor="nftReward" className="block text-start text-sm font-medium ">
-                      NFT reward
-                      {/* tao sau bang cach them list or */}
-                    </label>
-                    <div className="form-control">
-                      <span className="text-xs text-gray-500">
-                        Choose an NFT from your wallet and send to your fans when they subscribe your event.
-                      </span>
-                      <p>List NFT</p>
-                      <p>List NFT</p>
-                      <p>List NFT</p>
-                      <p>List NFT</p>
-                      <p>List NFT</p>
-                      <p>List NFT</p>
-                      <p>List NFT</p>
-                      {/* <input
-                type="text"
-                name="nftReward"
-                id="nftReward"
-                onChange={formik.handleChange}
-                value={formik.values.nftReward}
-                className=""
-                placeholder="NFT Reward"
-              /> */}
-                      <div className="input-group mb-10">
-                        <p className="text-xs text-center">
-                          <span className="opacity-80 pt-5 text-gray-500">Don't have any NFT yet? </span>
-                          <Link to={'/sign-up'} className="text-color-primary hover:underline">
-                            Create one
-                          </Link>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="input-group">
-                    <button type="submit" className="btn btn-primary btn-xl btn-block">
-                      Create
-                    </button>
-                  </div>
-                </form>
-              </Dialog.Panel>
-            </Transition.Child>
+            </p>
           </div>
         </div>
-      </Dialog>
-    </Transition>
-  )
-}
+        <div className="form-control no-icon">
+          <label
+            htmlFor="event_name"
+            className="block text-start text-sm font-medium my-2"
+          >
+            Event name
+          </label>
+          <div className="mt-1">
+            <input
+              type="text"
+              name="title"
+              id="title"
+              onChange={formik.handleChange}
+              value={formik.values.title}
+              className=""
+              placeholder="Title"
+            />
+          </div>
+        </div>
+
+        <div className="form-control no-icon">
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-start my-2"
+          >
+            Description
+          </label>
+          <div className="mt-1">
+            <textarea
+              name="description"
+              id="description"
+              onChange={formik.handleChange}
+              value={formik.values.description}
+              className=""
+              placeholder="Description your event"
+            />
+          </div>
+        </div>
+
+        <div className="form-control no-icon">
+          <label
+            htmlFor="eventTime"
+            className="block text-start text-sm font-medium my-2"
+          >
+            Event time
+          </label>
+          <div className="mt-1">
+            <input
+              type="date"
+              name="eventTime"
+              id="eventTime"
+              onChange={formik.handleChange}
+              value={formik.values.eventTime}
+              className=""
+              placeholder="Event time"
+            />
+          </div>
+        </div>
+        <div className="form-control no-icon">
+          <label
+            htmlFor="ticketLimit"
+            className="block text-start text-sm font-medium my-2"
+          >
+            Ticket limitation
+          </label>
+          <div className="mt-1">
+            <input
+              type="number"
+              name="ticketLimit"
+              id="ticketLimit"
+              onChange={formik.handleChange}
+              value={formik.values.ticketLimit}
+              className=""
+              placeholder="Ticket limit"
+            />
+          </div>
+        </div>
+        <div className="mt-4">
+            <div className="flex gap-4 flex-row-reverse">
+              <button type="submit" className="btn btn-primary btn-lg">
+                Create
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="btn btn-lg"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+      </form>
+    </Modal>
+  );
+};
