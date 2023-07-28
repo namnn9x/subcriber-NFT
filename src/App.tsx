@@ -5,7 +5,6 @@ import Signin from './containers/Signin'
 import Signout from './containers/Signout'
 import Signup from './containers/Signup'
 import { Layout } from './containers/Layout/layout'
-import EventList from './containers/Event'
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react'
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
 import { clusterApiUrl } from '@solana/web3.js'
@@ -15,6 +14,7 @@ import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 import NFTList from './containers/NFTs'
 import { Network, ShyftSdk } from '@shyft-to/js'
 import Company from './containers/Company'
+import { ListEvent } from './containers/ListEvent'
 
 export const shyft = new ShyftSdk({ apiKey: process.env.REACT_APP_SHYFT_API_KEY!, network: Network.Devnet })
 
@@ -36,7 +36,7 @@ function App() {
                   <Route path="sign-up" element={<Signup />} />
                 </Route>
                 <Route path="/" element={<Layout />}>
-                  <Route path="/general-event" element={<EventList />} />
+                  <Route path="/general-event" element={<ListEvent />} />
                   <Route path="/nfts" element={<NFTList />} />
                   <Route path="/company" element={<Company />} />
                 </Route>
