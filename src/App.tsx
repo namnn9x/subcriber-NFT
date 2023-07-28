@@ -13,12 +13,15 @@ import { useMemo } from 'react'
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets'
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 import NFTList from './containers/NFTs'
+import { Network, ShyftSdk } from '@shyft-to/js'
+
+export const shyft = new ShyftSdk({ apiKey: process.env.REACT_APP_SHYFT_API_KEY!, network: Network.Devnet })
 
 function App() {
   const network = WalletAdapterNetwork.Devnet
 
   const endpoint = useMemo(() => clusterApiUrl(network), [network])
-
+  
   return (
     <div className="App">
       <AuthenProvider>

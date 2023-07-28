@@ -6,6 +6,7 @@ import { HiGift } from 'react-icons/hi'
 import { LuPartyPopper } from 'react-icons/lu'
 import { AiOutlinePlus } from 'react-icons/ai'
 import LoadingPage from '../../components/Loading'
+import { shyft } from '../../App'
 
 function NFTList() {
   const [loading, setLoading] = useState<boolean>(false)
@@ -19,7 +20,6 @@ function NFTList() {
     async function fetchNFT(publicKey: string) {
       try {
         setLoading(true)
-        const shyft = new ShyftSdk({ apiKey: process.env.REACT_APP_SHYFT_API_KEY!, network: Network.Devnet })
         const nfts = await shyft.nft.getNftByOwner({
           owner: publicKey,
           network: Network.Devnet,
