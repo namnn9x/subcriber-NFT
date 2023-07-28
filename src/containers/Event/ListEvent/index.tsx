@@ -7,6 +7,8 @@ import { IUser, getAllArtists } from "../../../services/users"
 import LoadingPage from "../../../components/Loading"
 import Slider from "react-slick"
 import { NFTCreate } from "../../NFTs/NFTCreate"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { useWalletModal } from "@solana/wallet-adapter-react-ui"
 
 const settings = {
   focusOnSelect: true,
@@ -21,8 +23,14 @@ export const ListEvent = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [ artistAll, setArtistAll ] = useState<IUser[]>([])
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const { connected } = useWallet()
+  const { setVisible } = useWalletModal()
   const handleCreateNFT = () => {
-    setIsOpen(true)
+    if (connected) {
+      setIsOpen(true)
+    } else {
+      setVisible(true)
+    }
   }
 
   useEffect(() => {

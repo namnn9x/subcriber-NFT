@@ -21,7 +21,7 @@ function App() {
   const network = WalletAdapterNetwork.Devnet
 
   const endpoint = useMemo(() => clusterApiUrl(network), [network])
-  
+
   return (
     <div className="App">
       <AuthenProvider>
