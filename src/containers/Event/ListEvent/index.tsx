@@ -6,6 +6,9 @@ import { TbGiftOff } from "react-icons/tb"
 import { IUser, getAllArtists } from "../../../services/users"
 import LoadingPage from "../../../components/Loading"
 import Slider from "react-slick"
+import { NFTCreate } from "../../NFTs/NFTCreate"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { useWalletModal } from "@solana/wallet-adapter-react-ui"
 
 const settings = {
   focusOnSelect: true,
@@ -19,6 +22,16 @@ export const ListEvent = () => {
   const { events, setEventAll } = useEventStore();
   const [loading, setLoading] = useState<boolean>(false)
   const [ artistAll, setArtistAll ] = useState<IUser[]>([])
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const { connected } = useWallet()
+  const { setVisible } = useWalletModal()
+  const handleCreateNFT = () => {
+    if (connected) {
+      setIsOpen(true)
+    } else {
+      setVisible(true)
+    }
+  }
 
   useEffect(() => {
     void (async () => {
@@ -39,6 +52,7 @@ export const ListEvent = () => {
   }, []);
 
   return (
+    <>
     <div className="container mx-auto scroll-smooth h-full font-semibold">
     {loading ? <LoadingPage/> :
       <div>
@@ -91,12 +105,19 @@ export const ListEvent = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="px-3 pb-5">
+                    <div className="px-3 pb-5 flex justify-around">
                       <button
                         type="submit"
                         className="btn btn-primary btn-lg h-10 w-20 px-3 py-5"
                       >
                         Subrise
+                      </button>
+                      <button
+                        onClick={handleCreateNFT}
+                        type="submit"
+                        className="btn btn-primary btn-lg h-10 w-20 px-3 py-5"
+                      >
+                        Create NFT
                       </button>
                     </div>
                   </div>
@@ -108,5 +129,7 @@ export const ListEvent = () => {
         ))}
       </div>}
     </div>
+    <NFTCreate isOpen={isOpen} setIsOpen={setIsOpen}/>
+    </>
   );
 };
