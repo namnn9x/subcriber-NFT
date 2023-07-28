@@ -8,7 +8,7 @@ export interface IEvent {
   description: string,
   coverImage: string,
   ticketLimit: number,
-  nftReward: string,
+  nftReward?: string[],
   createdBy?: string,
   eventTime?: Timestamp | null,
   createdAt?: Timestamp | null
@@ -37,15 +37,15 @@ export const addEvent = async (event: IEvent) => {
 
 }
 
-export const updateEvent = async ({
-  id, event
-}: {
-  id: string,
-  event: Partial<Event>
+export const updateEvent = async ({ newEvent }: {
+  newEvent: IEvent
 }) => {
-  updateDoc(doc(db, "events", id), {
+  const idx  = newEvent.id;
+  if (!idx) return
+
+  updateDoc(doc(db, "events", idx), {
     // content,
-    event,
+    newEvent,
     // title,
     updatedAt: Timestamp.now(),
   })
