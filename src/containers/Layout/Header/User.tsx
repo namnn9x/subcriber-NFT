@@ -1,36 +1,21 @@
-import { Popover, Transition } from '@headlessui/react'
-import { Fragment } from 'react'
+import { Popover, Transition } from "@headlessui/react";
+import { Fragment } from "react";
 import { useUserStore } from "../../../store/user";
-import { useNavigate } from 'react-router';
+import { useNavigate } from "react-router";
 
 export const User = () => {
-  const { user, resetUser } = useUserStore()
-  const navigate = useNavigate()
-
-  const options = [
-    {
-      name: 'Edit',
-      href: '',
-      onClick: () => {
-
-      }
-    },
-    {
-      name: 'Log Out',
-      href: '',
-      onClick: () => {
-        navigate('/sign-in')
-        resetUser()
-      }
-    },
-  ]
+  const { user, resetUser } = useUserStore();
+  const navigate = useNavigate();
 
   return (
     <>
       <Popover>
         <Popover.Button>
           <div className="">
-            <a href="#" className="text-sm font-semibold leading-6 text-gray-300 flex items-center">
+            <a
+              href="#"
+              className="text-sm font-semibold leading-6 text-gray-300 flex items-center"
+            >
               <img
                 src="https://tecdn.b-cdn.net/img/new/avatars/5.webp"
                 className="mx-auto w-10 rounded-lg ml-1 pt-1"
@@ -51,42 +36,31 @@ export const User = () => {
           <Popover.Panel className="absolute z-10">
             <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 mt-3">
               <div className="relative grid bg-white lg:grid-cols-1">
-                <div className='bg-gray-500'>
-                  <p className='font-semibold text-sm text-white p-2'>{user.fullname}</p>
+                <div className="bg-gray-500">
+                  <p className="font-semibold text-sm text-white p-2">
+                    {user.fullname}
+                  </p>
                 </div>
-                {options.map((item) => (
-                  <div className="hover:bg-gray-300 hover:bg-gray-300  px-6 py-3">
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      onClick={item.onClick}
-                      className=" rounded-lg transition duration-150 ease-in-out focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                    >
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">{item.name}</p>
-                      </div>
-                    </a>
+                <div
+                  className="hover:bg-gray-300 hover:bg-gray-300 cursor-pointer  px-6 py-3"
+                  onClick={() => {
+                    navigate("/sign-in");
+                    resetUser();
+                  }}
+                >
+                  <div className="rounded-lg transition duration-150 ease-in-out focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">
+                        Log Out
+                      </p>
+                    </div>
                   </div>
-                ))}
+                </div>
               </div>
             </div>
           </Popover.Panel>
         </Transition>
       </Popover>
     </>
-  )
-}
-// import { useAuth } from "../../../hooks";
-// import { useUserStore } from "../../../store/user";
-
-// export const User = () => {
-//   const { user } = useUserStore()
-//   console.log(user, 'user')
-//   return (
-//     <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-//       <a href="#" className="text-sm font-semibold leading-6 text-gray-300">
-//         {user.fullname}
-//       </a>
-//     </div>
-//   );
-// };
+  );
+};
