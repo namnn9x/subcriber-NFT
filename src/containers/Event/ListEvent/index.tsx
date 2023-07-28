@@ -58,8 +58,8 @@ export const ListEvent = () => {
                     key={index}
                     className="max-w-sm group bg-slate-200 text-black rounded-md overflow-hidden shadow-lg"
                   >
-                    <div>
-                      <img className="w-full group-hover:scale-105 ease-in duration-200" src={event.coverImage} loading="lazy"/>
+                    <div className="w-auto h-60">
+                      <img className="w-full h-full group-hover:scale-105 ease-in duration-200" src={event.coverImage} alt={event.title} loading="lazy"/>
                     </div>
                     <div className="px-6 py-4">
                       <div className="font-bold text-xl mb-2">
