@@ -1,7 +1,7 @@
 export const Footer = () => {
   return (
-    <footer className="w-full h-30 header text-center text-white sticky bottom-0">
-      <div className="pt-9">
+    <footer className="w-full h-30 header font-semibold text-center text-white sticky bottom-0">
+      <div className="pt-6">
         <div className="flex justify-center">
           <a href="#!" className="mr-9">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
@@ -40,7 +40,7 @@ export const Footer = () => {
         </div>
       </div>
 
-      <div className="bg-secondary-300 p-4 text-center dark:bg-secondary-700">
+      <div className="bg-secondary-300 p-3 text-center text-sm dark:bg-secondary-700">
         © 2023 Copyright: 404 not found
       </div>
     </footer>

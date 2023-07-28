@@ -73,11 +73,11 @@ export const ListEvent = () => {
                     className="max-w-sm group bg-slate-200 text-black rounded-md overflow-hidden shadow-lg"
                   >
                     <div className="w-auto h-60">
-                      <img className="w-full h-full group-hover:scale-105 ease-in duration-200" src={event.coverImage} alt={event.title} loading="lazy"/>
+                      <img className="w-full h-full group-hover:scale-105 ease-in duration-200" src={event.coverImage || '/statics/images/default-img.png'} alt={event.title} loading="lazy"/>
                     </div>
-                    <div className="px-6 py-4">
+                    <div className="px-6 py-6">
                       <div className="font-bold text-xl mb-2">
-                        {event.title}
+                        {event.title || "Even Name"}
                       </div>
                       <div className="text-xs pb-2">{event.description}</div>
                       <div className="flex flex-wrap">
@@ -108,14 +108,14 @@ export const ListEvent = () => {
                     <div className="px-3 pb-5 flex justify-around">
                       <button
                         type="submit"
-                        className="btn btn-primary btn-lg h-10 w-20 px-3 py-5"
+                        className="btn btn-primary btn-lg h-10 w-28 px-3 py-5"
                       >
                         Subrise
                       </button>
                       <button
                         onClick={handleCreateNFT}
                         type="submit"
-                        className="btn btn-primary btn-lg h-10 w-20 px-3 py-5"
+                        className="btn btn-primary btn-lg h-10 w-28 px-3 py-5"
                       >
                         Create NFT
                       </button>
