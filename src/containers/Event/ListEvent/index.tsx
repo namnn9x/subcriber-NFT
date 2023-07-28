@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getAllEvent } from "../../../services/event"
+import { IEvent, getAllEvent } from "../../../services/event"
 import { useEventStore } from "../../../store/event"
 import { HiGift } from "react-icons/hi"
 import { TbGiftOff } from "react-icons/tb"
@@ -22,11 +22,13 @@ export const ListEvent = () => {
   const { events, setEventAll } = useEventStore();
   const [loading, setLoading] = useState<boolean>(false)
   const [ artistAll, setArtistAll ] = useState<IUser[]>([])
+  const [ currentEvent, setCurrentEvent] = useState<IEvent>()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const { connected } = useWallet()
   const { setVisible } = useWalletModal()
-  const handleCreateNFT = () => {
+  const handleCreateNFT = (event: IEvent) => {
     if (connected) {
+      setCurrentEvent(event)
       setIsOpen(true)
     } else {
       setVisible(true)
@@ -113,7 +115,7 @@ export const ListEvent = () => {
                         Subrise
                       </button>
                       <button
-                        onClick={handleCreateNFT}
+                        onClick={() => handleCreateNFT(event)}
                         type="submit"
                         className="btn btn-primary btn-lg h-10 w-20 px-3 py-5"
                       >
@@ -129,7 +131,7 @@ export const ListEvent = () => {
         ))}
       </div>}
     </div>
-    <NFTCreate isOpen={isOpen} setIsOpen={setIsOpen}/>
+    <NFTCreate isOpen={isOpen} setIsOpen={setIsOpen} event={currentEvent}/>
     </>
   );
 };

@@ -7,9 +7,11 @@ import { FcCheckmark } from 'react-icons/fc'
 import { MdDangerous } from 'react-icons/md'
 import { shyft } from '../../App'
 import { signAndConfirmTransaction } from '../../hooks'
+import { IEvent, updateEvent } from '../../services/event'
 
 
 interface INFTCreate {
+  event?: IEvent
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -35,7 +37,7 @@ interface NFTCreate {
   data?: File
 }
 
-export const NFTCreate = ({ setIsOpen, isOpen }: INFTCreate) => {
+export const NFTCreate = ({ setIsOpen, isOpen, event }: INFTCreate) => {
 
   const [loading, setLoading] = useState(false)
   const [minting, setMinting] = useState(false)
@@ -103,6 +105,14 @@ export const NFTCreate = ({ setIsOpen, isOpen }: INFTCreate) => {
         try {
           setMinting(false)
           await signAndConfirmTransaction(Network.Devnet, encoded_transaction, callback)
+          if (event ) {
+            const newEvent: IEvent = {
+              ...event,
+              nftReward: event.nftReward && [...event.nftReward, mint]
+            }
+            console.log(newEvent, 'newEvent')
+            await updateEvent({ newEvent })
+          }
         } catch (error) {
           setError(true)
           console.log(error)
