@@ -3,10 +3,12 @@ import { HiOutlineMail, HiOutlineLockClosed, HiKey } from 'react-icons/hi'
 import { signIn } from '../../services/sign'
 import { useFormik } from 'formik'
 import { message } from '../../components/message'
+import { useUserStore } from '../../store/user'
+import { useEffect } from 'react'
 
 function Signin() {
   const navigate = useNavigate()
-
+  const { user } = useUserStore()
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -51,6 +53,12 @@ function Signin() {
         })
     },
   })
+
+  useEffect(() => {
+    if (user.fullname) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div>

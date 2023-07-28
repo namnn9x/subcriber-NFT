@@ -16,6 +16,7 @@ export interface IUser {
 export interface IUserStore {
   user: IUser;
   setUser: (user: IUser) => void;
+  resetUser: () => void;
 }
 
 export const useUserStore = create<IUserStore>((set) => ({
@@ -34,6 +35,21 @@ export const useUserStore = create<IUserStore>((set) => ({
       produce((state: IUserStore) => {
         state.user = data;
       }),
+    ),
+
+  resetUser: () =>
+    set(
+      produce((state: IUserStore) => {
+        state.user = {
+          uid: "",
+          fullname: "",
+          email: "",
+          photoURL: "",
+          address: "",
+          dateOfBirth: null,
+          createdAt: null,
+        };
+      })
     ),
 
 }));
