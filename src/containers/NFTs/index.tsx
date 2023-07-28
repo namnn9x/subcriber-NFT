@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
+import Pagination from "rc-pagination";
+import "rc-pagination/assets/index.css";
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { Network, Nft, ShyftSdk } from '@shyft-to/js'
-import { HiGift } from 'react-icons/hi'
-import { LuPartyPopper } from 'react-icons/lu'
 import { AiOutlinePlus } from 'react-icons/ai'
 import LoadingPage from '../../components/Loading'
 import { shyft } from '../../App'
@@ -11,8 +11,20 @@ import { shyft } from '../../App'
 function NFTList() {
   const [loading, setLoading] = useState<boolean>(false)
   const [nfts, setNfts] = useState<Nft[] | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const countPerPage = 3
+  const [collection, setCollection] = useState(
+    (nfts?.slice(0, countPerPage))
+  );
 
   const { connected, publicKey } = useWallet()
+
+  const updatePage = (p: number) => {
+    setCurrentPage(p);
+    const to = countPerPage * p;
+    const from = to - countPerPage;
+    setCollection(nfts?.slice(from, to))
+  };
 
   //Tao file .env.local or .env, tao 1 bien
 
@@ -39,6 +51,12 @@ function NFTList() {
 
   return (
     <div className={`container mx-auto px-3 py-5`}>
+      {nfts && nfts.length && <Pagination
+        pageSize={countPerPage}
+        onChange={updatePage}
+        current={currentPage}
+        total={nfts.length}
+      />}
       <h1 className='text-4xl pb-4 font-bold tracking-tight'>List NFT</h1>
       {loading ? (
         <LoadingPage />
@@ -55,7 +73,7 @@ function NFTList() {
             <>
               {nfts && nfts.length ? (
                 <div className='grid grid-cols-5 gap-8'>
-                  {nfts.map((nft, index: number) => (
+                  {collection?.map((nft, index: number) => (
                     <div className="bg-white rounded-lg group event-hover">
                       <div>
                         <div className="aspect-h-1 aspect-w-1 w-full h-full overflow-hidden rounded xl:aspect-h-8 xl:aspect-w-7 relative">
@@ -75,7 +93,7 @@ function NFTList() {
                               {nft.description}
                             </h3>
                           </div>  
-                          <div className="mt-4 py-2 px-3 text-xs group-hover:ease-in scale-100 btn-nft bg-opacity-60 absolute bottom-1/2">
+                          <div className="mt-4 py-2 px-3 text-xs scale-100 btn-nft bg-opacity-60 absolute bottom-1/2">
                             Create event use NFT as reward
                             <span></span><span></span><span></span><span></span>
                           </div>
