@@ -1,8 +1,6 @@
 import { Fragment, useEffect, useState } from 'react'
 import { IEvent, getAllEvent } from '../../services/event'
 import { useEventStore } from '../../store/event'
-import { HiGift } from 'react-icons/hi'
-import { TbGiftOff } from 'react-icons/tb'
 import { IUser, getAllArtists } from '../../services/users'
 import LoadingPage from '../../components/Loading'
 import Slider from 'react-slick'
@@ -23,11 +21,13 @@ export const ListEvent = () => {
   const { events, setEventAll } = useEventStore()
   const [loading, setLoading] = useState<boolean>(false)
   const [artistAll, setArtistAll] = useState<IUser[]>([])
+  const [ currentEvent, setCurrentEvent] = useState<IEvent>()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const { connected } = useWallet()
   const { setVisible } = useWalletModal()
-  const handleCreateNFT = () => {
+  const handleCreateNFT = (event: IEvent) => {
     if (connected) {
+      setCurrentEvent(event)
       setIsOpen(true)
     } else {
       setVisible(true)
@@ -70,7 +70,7 @@ export const ListEvent = () => {
                       if (user.uid !== event.uid) return
                       return (
                         <Fragment key={index}>
-                            {<Event event={event} handleCreateNFT={handleCreateNFT}/>}
+                            {<Event event={event} handleCreateNFT={() => handleCreateNFT(event)}/>}
                         </Fragment>
                       )})}
                   </Slider>
@@ -80,7 +80,7 @@ export const ListEvent = () => {
           </div>
         )}
       </div>
-      <NFTCreate isOpen={isOpen} setIsOpen={setIsOpen} />
+      <NFTCreate isOpen={isOpen} setIsOpen={setIsOpen} event={currentEvent}/>
     </>
   )
 }
