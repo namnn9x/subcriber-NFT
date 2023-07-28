@@ -17,23 +17,11 @@ import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { NFTCreate } from '../../NFTs/NFTCreate'
 
 export const EventCreate = () => {
-  const [open, setOpen] = useState<boolean>(false)
   const [file, setFile] = useState<any>()
   const inputFileRef = useRef<HTMLInputElement>(null)
   const [blob, setBlob] = useState<string>('')
-  const [ currentEvent, setCurrentEvent] = useState<IEvent>()
   const { user } = useUserStore()
   const { setEvent } = useEventStore()
-  const { connected } = useWallet()
-  const { setVisible } = useWalletModal()
-
-  const handleCreateNFT = () => {
-    if (connected) {
-      setOpen(true)
-    } else {
-      setVisible(true)
-    }
-  }
 
   const formik = useFormik({
     initialValues: {
@@ -97,7 +85,7 @@ export const EventCreate = () => {
           <div className='grid grid-cols-2 gap-x-8'>
             <div className='px-4'>
               <div className=''>
-                <label htmlFor='coverImage' className='block text-start text-sm font-medium my-2'>
+                <label htmlFor='coverImage' className='block text-start text-sm font-medium my-2 pb-5'>
                   Cover image
                 </label>
                 <div
@@ -107,8 +95,9 @@ export const EventCreate = () => {
                     } as React.CSSProperties
                   }
                   onClick={() => inputFileRef.current && inputFileRef.current.click()}
-                  className={`${blob ? 'before-bg-file' : ''
-                    } relative cursor-pointer h-[30vh] w-full mx-auto flex flex-col items-center border-2 border-dashed rounded border-blue-600 text-base leading-[1.6] select-none`}
+                  className={`${
+                    blob ? 'before-bg-file' : ''
+                  } relative cursor-pointer h-[30vh] w-full mx-auto flex flex-col items-center border-2 border-dashed rounded border-blue-600 text-base leading-[1.6] select-none`}
                 >
                   <input ref={inputFileRef} type='file' onChange={onFileChange} accept='image/*' hidden />
                   <p className='text-sm font-medium text-start my-2'>Click to select photo</p>
@@ -183,28 +172,11 @@ export const EventCreate = () => {
             </div>
             <div>
               <label htmlFor='ticketLimit' className='block text-start text-sm font-medium my-2'>
-                <div>
-                  NFT Reward
-                </div>
+                <div>NFT Reward</div>
                 <span className='text-xs'>Choose your NFT as subrise reward</span>
               </label>
               <div>
-                <NFTList isList={true}/>
-                <div>
-
-                <div className='pt-5'>
-                
-                    <div className=''>or </div>
-                    <button 
-                      className='btn btn-primary items-center mt-3' 
-                      onClick={() => handleCreateNFT()}
-                    >
-                      <span className='font-bold text-base'>Create one</span>
-                      <AiOutlinePlus className='w-3 h-3 ml-1' />
-                    </button>
-                  </div>
-                </div>
-
+                <NFTList isList={true} />
               </div>
             </div>
           </div>
@@ -217,7 +189,6 @@ export const EventCreate = () => {
           </div>
         </div>
       </form>
-        <NFTCreate isOpen={open} setIsOpen={setOpen}/>
     </div>
   )
 }
