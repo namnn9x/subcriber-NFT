@@ -1,19 +1,27 @@
 import { Popover, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
-import { useAuth } from "../../../hooks";
 import { useUserStore } from "../../../store/user";
+import { useNavigate } from 'react-router';
 
 export const User = () => {
-  const { user, setUser } = useUserStore()
+  const { user, resetUser } = useUserStore()
+  const navigate = useNavigate()
 
   const options = [
     {
       name: 'Edit',
-      href: '##',
+      href: '',
+      onClick: () => {
+
+      }
     },
     {
       name: 'Log Out',
-      href: '/sign-in',
+      href: '',
+      onClick: () => {
+        navigate('/sign-in')
+        resetUser()
+      }
     },
   ]
 
@@ -51,6 +59,7 @@ export const User = () => {
                     <a
                       key={item.name}
                       href={item.href}
+                      onClick={item.onClick}
                       className=" rounded-lg transition duration-150 ease-in-out focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                     >
                       <div>
