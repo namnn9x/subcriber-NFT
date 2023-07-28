@@ -21,11 +21,13 @@ export const ListEvent = () => {
   const { events, setEventAll } = useEventStore()
   const [loading, setLoading] = useState<boolean>(false)
   const [artistAll, setArtistAll] = useState<IUser[]>([])
+  const [ currentEvent, setCurrentEvent] = useState<IEvent>()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const { connected } = useWallet()
   const { setVisible } = useWalletModal()
-  const handleCreateNFT = () => {
+  const handleCreateNFT = (event: IEvent) => {
     if (connected) {
+      setCurrentEvent(event)
       setIsOpen(true)
     } else {
       setVisible(true)
@@ -68,7 +70,7 @@ export const ListEvent = () => {
                       if (user.uid !== event.uid) return
                       return (
                         <Fragment key={index}>
-                            {<Event event={event} handleCreateNFT={handleCreateNFT}/>}
+                            {<Event event={event} handleCreateNFT={() => handleCreateNFT(event)}/>}
                         </Fragment>
                       )})}
                   </Slider>
@@ -78,7 +80,7 @@ export const ListEvent = () => {
           </div>
         )}
       </div>
-      <NFTCreate isOpen={isOpen} setIsOpen={setIsOpen} />
+      <NFTCreate isOpen={isOpen} setIsOpen={setIsOpen} event={currentEvent}/>
     </>
   )
 }

@@ -9,7 +9,6 @@ import { shyft } from '../../App'
 import { signAndConfirmTransaction } from '../../hooks'
 import { IEvent, updateEvent } from '../../services/event'
 
-
 interface INFTCreate {
   event?: IEvent
   isOpen: boolean
