@@ -1,10 +1,19 @@
-import { useEffect, useMemo, useState } from "react";
-import { IEvent, getAllEvent } from "../../../services/event";
-import { useEventStore } from "../../../store/event";
-import { HiGift } from "react-icons/hi";
-import { TbGiftOff } from "react-icons/tb";
-import { IUser, getAllArtists } from "../../../services/users";
-import LoadingPage from "../../../components/Loading";
+import { useEffect, useState } from "react"
+import { getAllEvent } from "../../../services/event"
+import { useEventStore } from "../../../store/event"
+import { HiGift } from "react-icons/hi"
+import { TbGiftOff } from "react-icons/tb"
+import { IUser, getAllArtists } from "../../../services/users"
+import LoadingPage from "../../../components/Loading"
+import Slider from "react-slick"
+
+const settings = {
+  focusOnSelect: true,
+  infinite: false,
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  speed: 500
+};
 
 export const ListEvent = () => {
   const { events, setEventAll } = useEventStore();
@@ -20,7 +29,7 @@ export const ListEvent = () => {
         const events = await getAllEvent();
         if (!events || !userArtist ) return;
         setEventAll(events);
-        setArtistAll(userArtist)  
+        setArtistAll(userArtist)
       } catch (error) {
         console.log(error)
       } finally {
@@ -31,7 +40,7 @@ export const ListEvent = () => {
 
   return (
     <div className="container mx-auto scroll-smooth h-full font-semibold">
-     {loading ? <LoadingPage/> :  
+    {loading ? <LoadingPage/> :
       <div>
         {artistAll.map((user) => (
           <div className="grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-1 gap-y-8 mb-5">
@@ -40,15 +49,18 @@ export const ListEvent = () => {
               Artist: {user.fullname || ""
               }
             </div>}
-            <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-1 gap-x-10 gap-y-4">
+            <div>
+              <Slider {...settings}>
               {events.map((event, index) => {
                 if (user.uid !== event.uid) return null;
                 return (
                   <div
                     key={index}
-                    className="max-w-sm bg-slate-200 text-black rounded-md overflow-hidden shadow-lg"
+                    className="max-w-sm group bg-slate-200 text-black rounded-md overflow-hidden shadow-lg"
                   >
-                    <img className="w-full" src={event.coverImage} />
+                    <div>
+                      <img className="w-full group-hover:scale-105 ease-in duration-200" src={event.coverImage} loading="lazy"/>
+                    </div>
                     <div className="px-6 py-4">
                       <div className="font-bold text-xl mb-2">
                         {event.title}
@@ -90,6 +102,7 @@ export const ListEvent = () => {
                   </div>
                 );
               })}
+              </Slider>
             </div>
           </div>
         ))}
