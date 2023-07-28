@@ -33,7 +33,7 @@ export const EventCreate = ({
       createdBy: '',
       eventTime: new Date().toDateString(),
       ticketLimit: 0,
-      nftReward: "",
+      nftReward: [],
     },
     onSubmit: async (event) => {
       // set image to store firebase
@@ -49,7 +49,7 @@ export const EventCreate = ({
         coverImage: imageURL,
         eventTime: Timestamp.fromMillis(getTime),
         uid: user.uid || '',
-        createdBy: user.fullname
+        createdBy: user.fullname,
       }
       const resEvent = await addEvent(newEvent);
       setEvent(resEvent as IEvent)

@@ -1,8 +1,6 @@
 import { Fragment, useEffect, useState } from 'react'
 import { IEvent, getAllEvent } from '../../services/event'
 import { useEventStore } from '../../store/event'
-import { HiGift } from 'react-icons/hi'
-import { TbGiftOff } from 'react-icons/tb'
 import { IUser, getAllArtists } from '../../services/users'
 import LoadingPage from '../../components/Loading'
 import Slider from 'react-slick'
