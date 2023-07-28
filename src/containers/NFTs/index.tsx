@@ -37,7 +37,6 @@ function NFTList() {
     }
   }, [publicKey])
 
-  console.log('================================>nfts',nfts)
   return (
     <div className={`container mx-auto px-3 py-5`}>
       <h1 className='text-4xl pb-4 font-bold tracking-tight'>List NFT</h1>
@@ -57,10 +56,10 @@ function NFTList() {
               {nfts && nfts.length ? (
                 <div className='grid grid-cols-5 gap-8'>
                   {nfts.map((nft, index: number) => (
-                    <div className="bg-white rounded-lg group">
-                      <a href="general-event">
+                    <div className="bg-white rounded-lg group event-hover">
+                      <div>
                         <div className="aspect-h-1 aspect-w-1 w-full h-full overflow-hidden rounded xl:aspect-h-8 xl:aspect-w-7 relative">
-                          <div className="w-full h-60">
+                          <div className="w-full h-60 filter">
                             <img
                               src={nft.image_uri}
                               alt={index.toString()}
@@ -76,17 +75,12 @@ function NFTList() {
                               {nft.description}
                             </h3>
                           </div>  
-                          <div className="mt-3 py-2 bg-slate-500 rounded-b-lg invisible group-hover:visible ease-up duration-100 absolute bottom-0">
-                            <div className="flex flex-row text-white font-bold items-center justify-center group-hover:ease-in scale-100">
-                              <LuPartyPopper />
-                              <span className="text-xs px-3">
-                                Create event use NFT as reward{" "}
-                              </span>
-                              <HiGift />
-                            </div>
+                          <div className="mt-4 py-2 px-3 text-xs group-hover:ease-in scale-100 btn-nft bg-opacity-60 absolute bottom-1/2">
+                            Create event use NFT as reward
+                            <span></span><span></span><span></span><span></span>
                           </div>
                         </div>
-                      </a>
+                      </div>
                     </div>
                   ))}
                 </div>
