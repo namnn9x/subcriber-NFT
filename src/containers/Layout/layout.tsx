@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router'
+import { Outlet, useLocation } from 'react-router'
 import { Header } from './Header'
 import { Footer } from './Footer'
 import { useAuth } from '../../hooks'
@@ -10,6 +10,9 @@ import EventLayout from './Event'
 export const Layout = () => {
   const { user } = useAuth()
   const { setUser } = useUserStore()
+  const location = useLocation()
+  const enableCreateEvent = user && location.pathname !== '/company'
+
   useEffect(() => {
     if (user?.uid) {
       getUser(user.uid).then((userCre) => {
@@ -25,12 +28,13 @@ export const Layout = () => {
 
     // eslint-disable-next-line
   }, [user?.uid])
+
   return (
     <div className='flex flex-col min-h-screen'>
       <Header />
       <main>
         <Outlet />
-        {user && <EventLayout/>}
+        {enableCreateEvent && <EventLayout/>}
       </main>
       <Footer />
     </div>

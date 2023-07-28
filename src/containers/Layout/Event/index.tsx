@@ -1,11 +1,11 @@
-import { EventCreate } from "../../ListEvent/EventCreate";
-import { BtnEventCreate } from "../../ListEvent/EventCreate/components/btnEventCreate";
+import { useNavigate } from 'react-router-dom'
 import React, { useState } from "react";
+import { BtnEventCreate } from "../../ListEvent/EventCreate/components/btnEventCreate";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 
 function EventLayout() {
-  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const navigate = useNavigate()
   const { connected } = useWallet()
   const { setVisible} = useWalletModal()
 
@@ -13,13 +13,12 @@ function EventLayout() {
     if (!connected) {
       setVisible(true)
     } else {
-      setIsOpen(true)
+      navigate('/company')
     }
   }
 
   return (
     <div className="event">
-      <EventCreate isOpen={isOpen} setIsOpen={setIsOpen} />
       <BtnEventCreate onClick={handleOpen} />
     </div>
   )
