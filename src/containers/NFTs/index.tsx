@@ -69,10 +69,10 @@ function NFTList() {
                           <h3 className='mt-1 text-sm text-gray-700'>{nft.description}</h3>
                         </div>
 
-                        <div className='mt-3 py-2 bg-blue-400 rounded-b-lg invisible group-hover:visible ease-up duration-100'>
+                        <div className='mt-3 py-2 bg-slate-500 rounded-b-lg invisible group-hover:visible ease-up duration-100'>
                           <div className='flex flex-row text-white font-bold items-center justify-center group-hover:ease-in scale-100'>
                             <LuPartyPopper />
-                            <span>Create event use NFT as reward </span>
+                            <span className='text-xs px-3'>Create event use NFT as reward </span>
                             <HiGift />
                           </div>
                         </div>
