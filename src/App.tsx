@@ -15,6 +15,7 @@ import NFTList from './containers/NFTs'
 import { Network, ShyftSdk } from '@shyft-to/js'
 import Company from './containers/Company'
 import { ListEvent } from './containers/ListEvent'
+import { EventCreate } from './containers/ListEvent/EventCreate'
 
 export const shyft = new ShyftSdk({ apiKey: process.env.REACT_APP_SHYFT_API_KEY!, network: Network.Devnet })
 
@@ -38,7 +39,7 @@ function App() {
                 <Route path="/" element={<Layout />}>
                   <Route path="/general-event" element={<ListEvent />} />
                   <Route path="/nfts" element={<NFTList />} />
-                  <Route path="/company" element={<Company />} />
+                  <Route path="/company" element={<EventCreate/>} />
                 </Route>
               </Routes>
             </WalletModalProvider>

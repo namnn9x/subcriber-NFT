@@ -5,7 +5,11 @@
 .create-event-container {
   @apply flex flex-col items-center justify-center;
   height: calc(100vh - 2px);
+}
 
+.textarea-max{
+  resize: vertical;
+  max-height: 12vh!important;
 }
 
 .create-event .input-group :is(label) {
