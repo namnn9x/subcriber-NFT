@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
-import { Network, Nft, ShyftSdk } from '@shyft-to/js'
+import { Network, Nft } from '@shyft-to/js'
 import { HiGift } from 'react-icons/hi'
 import { LuPartyPopper } from 'react-icons/lu'
 import { AiOutlinePlus } from 'react-icons/ai'
 import LoadingPage from '../../components/Loading'
 import { shyft } from '../../App'
 
-function NFTList() {
+function Company() {
   const [loading, setLoading] = useState<boolean>(false)
   const [nfts, setNfts] = useState<Nft[] | null>(null)
 
@@ -20,11 +20,11 @@ function NFTList() {
     async function fetchNFT(publicKey: string) {
       try {
         setLoading(true)
-        const nfts = await shyft.nft.getNftByOwner({
-          owner: publicKey,
+        const nfts = await shyft.nft.getNftByMint({
+          mint: '7nihuc8F9Sj2d7rGX8L3JSmC4ZCUBMoHRB3LvnWTp351',
           network: Network.Devnet,
         })
-        setNfts(nfts)
+        setNfts([nfts])
       } catch (error: any) {
         // throw new Error(error)
       } finally {
@@ -37,7 +37,6 @@ function NFTList() {
     }
   }, [publicKey])
 
-  console.log('================================>nfts',nfts)
   return (
     <div className={`container mx-auto px-3 py-5`}>
       <h1 className='text-4xl pb-4 font-bold tracking-tight'>List NFT</h1>
@@ -98,4 +97,4 @@ function NFTList() {
   )
 }
 
-export default NFTList
+export default Company
