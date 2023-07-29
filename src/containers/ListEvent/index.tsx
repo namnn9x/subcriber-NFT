@@ -84,7 +84,7 @@ export const ListEvent = ({isMe = false} : Props) => {
                         if (user.uid !== event.uid) return
                         return (
                           <Fragment key={index}>
-                              {<Event event={event} handleCreateNFT={() => handleCreateNFT(event)}/>}
+                              {<Event event={event} handleCreateNFT={() => handleCreateNFT(event)} isMe={isMe}/>}
                           </Fragment>
                         )})}
                     </Slider>
