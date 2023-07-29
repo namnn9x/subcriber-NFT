@@ -113,7 +113,7 @@ export const EventCreate = () => {
                   className={`${blob ? 'before-bg-file' : ''
                     } relative cursor-pointer h-[30vh] w-full mx-auto flex flex-col items-center border-2 border-dashed rounded border-blue-600 text-base leading-[1.6] select-none`}
                 >
-                  <input ref={inputFileRef} type='file' onChange={onFileChange} accept='image/*' hidden />
+                  <input ref={inputFileRef} type='file' onChange={onFileChange} accept='image/*' hidden required />
                   <p className='text-sm font-medium text-start my-2'>Click to select photo</p>
                   <p className='text-center text-[#F05123] pointer-events-none'></p>
                 </div>
@@ -130,6 +130,7 @@ export const EventCreate = () => {
                     onChange={formik.handleChange}
                     value={formik.values.title}
                     className=''
+                    required
                     placeholder='Title'
                   />
                 </div>
@@ -162,6 +163,7 @@ export const EventCreate = () => {
                     id='eventTime'
                     onChange={formik.handleChange}
                     value={formik.values.eventTime}
+                    required
                     className=''
                     placeholder='Event time'
                   />
