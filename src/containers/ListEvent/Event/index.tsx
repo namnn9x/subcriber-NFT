@@ -7,59 +7,17 @@ import { restApiCall } from '@shyft-to/js/dist/cjs/utils'
 import { Network, ShyftSdk } from '@shyft-to/js'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { shyft } from '../../../App'
-import { signAndConfirmTransactionBe } from '../../../hooks'
+import { signAndConfirmTransaction, signAndConfirmTransactionBe } from '../../../hooks'
 import {TbGiftOff} from 'react-icons/tb'
 import { HiGift } from 'react-icons/hi'
 import axios from 'axios'
+import { message } from '../../../components/message'
 
 interface Props {
   event: IEvent
   handleCreateNFT: () => void
   isMe: boolean
 }
-
-var myHeaders = new Headers();
-myHeaders.append("x-api-key", "bvXLpPQsl-jO7w2M");
-
-
-// detach
-// try {
-//   const detach = await restApiCall('bvXLpPQsl-jO7w2M', {
-//     method: 'post',
-//     url: 'nft/mint_detach',
-//     data: {
-//       network: Network.Devnet, // dev
-//       wallet: '13Qr7d7VNh2b2AYw3pyNqfkFL8S1Ei3hdAaNT6MaqGHS', // publickey author
-//       master_nft_address: mint, // mint
-//       receiver: 'BmuyGf2DBGMEkmQH8wF7quLK58M7EBR7vfTk25NjadY4', // publickey user
-//       transfer_authority: false,
-//     },
-//   })
-//   console.log(detach, 'detach')
-// } catch (error) {
-//   console.log(error, 'error')
-// }
-
-// var raw = JSON.stringify({
-//   "network": "devnet",
-//   "wallet": "2fmz8SuNVyxEP6QwKQs6LNaT2ATszySPEJdhUDesxktc",
-//   "master_nft_address": "ByjAvSWaU7ffupEFM6BnG4s2nx55xU1vjMXC1JRQTHhS",
-//   "receiver": "BmuyGf2DBGMEkmQH8wF7quLK58M7EBR7vfTk25NjadY4",
-//   "transfer_authority": false,
-//   "message": "Thank you"
-// });
-
-// const requestOptions: any = {
-//   method: 'POST',
-//   headers: myHeaders,
-//   body: raw,
-//   redirect: 'follow'
-// };
-
-// fetch("https://api.shyft.to/sol/v1/nft/mint_detach", requestOptions)
-//   .then(response => response.text())
-//   .then(result => console.log(result))
-//   .catch(error => console.log('error', error));
 
 export const Event = ({ event, handleCreateNFT, isMe }: Props) => {
   const { user: currentUser } = useUserStore();
@@ -87,89 +45,110 @@ export const Event = ({ event, handleCreateNFT, isMe }: Props) => {
 
   }
 
+  const minNFT = async ({
+    walletMaster,
+    mint,
+    publicKey,
+  }: {
+    walletMaster: string,
+    mint: string,
+    publicKey: string,
+  }) => {
+    try {
+      const res: any = await axios({
+        // Endpoint để mint NFTs
+        url: 'https://api.shyft.to/sol/v1/nft/mint_detach',
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": 'Gcq9-xRnLV6KpAhT',
+        },
+        data: {
+          network: Network.Devnet, // dev
+          wallet: walletMaster, // publickey author
+          master_nft_address: mint, // mint
+          receiver: publicKey, // publickey user
+          transfer_authority: false
+        }
+      });
+  
+      if (!res.data.success) {
+        console.log('Some Error Occurred');
+        return;
+      }
+      console.log(res, 'res')
+      await signAndConfirmTransaction(Network.Devnet, res.data.result.encoded_transaction, callback).then(() => {
+        message.success('Sign successfully transaction')
+      }).catch((err) => {
+        console.log(`${err} err loi `)
+        message.error('Sign error transaction')
+      });
+
+    } catch (err) {
+      console.warn(err);
+    }
+  }
+
+  const checkUidSubscribed = (subscriberId: string[]) => {
+    if (!currentUser.uid) return
+
+    if(subscriberId.includes(currentUser.uid)) {
+      message.success('You have registered')
+      return
+    }
+  }
+
+  const checkTicketLimit = (subscriberId: string[], ticketLimit: number) => {
+    if (subscriberId.length === ticketLimit) {
+      message.success('Ticket limit has expired')
+      return
+    }
+  }
 
   const handleSubscribe = async () => {
     if (!event.id || !currentUser.uid) return
+
+    if (event.subscriberId) {
+      checkUidSubscribed(event.subscriberId)
+      checkTicketLimit(event.subscriberId, event.ticketLimit)
+    }
 
     const resEvent = await getEventById(event.id) as IEvent
     const nftReward = resEvent.nftReward
     const mint = nftReward[Math.floor(Math.random() * nftReward.length)];
     console.log(mint, '=================> get mint')
-
+    if(!mint) {
+      message.success('Event is not NFT reward')
+      return
+    }
     const masterNft = await shyft.nft.getNftByMint({
       network: Network.Devnet,
       mint: mint
     })
-    console.log(masterNft, 'masterNft')
-    console.log(publicKey?.toBase58(), 'publicKey')
 
-    axios({
-      // Endpoint to mint NFTs
-      url: 'https://api.shyft.to/sol/v1/nft/mint_detach',
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": process.env.REACT_APP_SHYFT_API_KEY!,
-      },
-      data: {
-        network: Network.Devnet, // dev
-        wallet: masterNft.owner, // publickey author
-        master_nft_address: mint, // mint
-        receiver: publicKey?.toBase58(), // publickey user
-        transfer_authority: false
-      }
+    console.log(masterNft.owner, 'wallet')
+    console.log(mint, 'mint')
+    console.log(publicKey?.toBase58(), 'publicKey?.toBase58()')
+    console.log('-----------------------------------')
+    console.log('=============> Get thanh cong data')
+
+    if (!publicKey) {
+      console.log('Not is publicKey')
+      return
+    }
+    await minNFT({
+      walletMaster: masterNft.owner,
+      mint,
+      publicKey: publicKey.toBase58()
     })
-      // Handle the response from backend here
-      .then(async (res: any) => {
-        console.log(res.data);
-        if(res.data.success === true)
-        {
-          const transaction = res.data.result.encoded_transaction;
-          console.log(res);
-          //send this transaction to the SHYFT JS SDK which will authenticate the transaction after approval from the sender
-        }
-        else
-        {
-          console.log('Some Error Occurred');
-        }
-        
-      })
-      // Catch errors if any
-      .catch((err: any) => {
-        console.warn(err);
-        // setMssg("Failed! Some error occurred");
-        
-      });
-   
-    const requestOptions: any = {
-      method: 'POST',
-      headers: myHeaders,
-      body: {
-        
-      },
-      redirect: 'follow'
+    
+    const newEvent: IEvent = {
+      ...resEvent,
+      subscriberId: resEvent.subscriberId ? [...resEvent.subscriberId, currentUser.uid] : [currentUser.uid]
     };
     
-
-    fetch("https://api.shyft.to/sol/v1/nft/mint_detach", requestOptions)
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
-
-    // try {
-    //   await signAndConfirmTransactionBe(Network.Devnet, detach.result.encoded_transaction, callback)
-    // } catch (error) {
-    //   console.log(error)
-    // }
-
-    // Save id user subscriber
-
-    // const newEvent: IEvent = {
-    //   ...resEvent,
-    //   subscriberId: [ ...resEvent.subscriberId, currentUser.uid]
-    // }
-    // await updateEvent({ newEvent })
-    // updateEventStore(event.id, newEvent)
+    await updateEvent({ newEvent })
+    updateEventStore(event.id, newEvent)
   }
 
   return (
@@ -197,10 +176,10 @@ export const Event = ({ event, handleCreateNFT, isMe }: Props) => {
           <div className=' text-left text-slate-400 pr-2 font-normal'>Ticket Limit :</div>
           <div className=' text-left text-slate-400 font-normal'>{event.ticketLimit}</div>
         </div>
-        <div className='flex flex-wrap'>
-          <div className=' text-left text-white'>NFT reward:</div>
-          <div className=' text-left flex items-center text-white'>
-            { event.nftReward && event.nftReward.length ? <HiGift /> : <TbGiftOff />}
+        <div className='flex flex-wrap ml-4'>
+          <div className=' text-left text-slate-400 pr-2 font-normal'>NFT reward : </div>
+          <div className=' text-left text-slate-400 font-normal flex items-center'>
+          {' '}{ event.nftReward && event.nftReward.length ? <HiGift /> : <TbGiftOff />}
           </div>
         </div>
         <div className='justify-around hidden group-hover:flex'>
