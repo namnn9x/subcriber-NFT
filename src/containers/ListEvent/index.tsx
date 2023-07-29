@@ -11,6 +11,7 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { Event } from './Event'
 import { useUserStore } from '../../store/user'
+import { ListTopEvent } from './ListTopEvent'
 
 interface Props {
   isMe?: boolean
@@ -80,6 +81,10 @@ export const ListEvent = ({ isMe = false }: Props) => {
         {loading ? (
           <LoadingPage />
         ) : (artistCurrent && artistCurrent.length &&
+          <>
+          <div>
+            <ListTopEvent events={events}/>
+          </div>
           <div>
             {
               artistCurrent.filter(user => isMe ? user.uid === currentUser.uid : user.uid !== currentUser.uid).map((user: IUser) => {
@@ -114,6 +119,7 @@ export const ListEvent = ({ isMe = false }: Props) => {
                 />
               </div>} */}
           </div>
+          </>
         )}
       </div>
       <NFTCreate isOpen={isOpen} setIsOpen={setIsOpen} event={currentEvent} />

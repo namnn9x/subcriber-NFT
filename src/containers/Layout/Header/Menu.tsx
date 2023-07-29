@@ -6,7 +6,7 @@ const navigations = [
   { name: "Event List", href: "general-event" },
   { name: "My Event", href: "my-event" },
   { name: "NFT", href: "nfts" },
-  { name: "Company", href: "company" },
+  { name: "Create Event", href: "company" },
 ];
 
 export const Menu = () => {
