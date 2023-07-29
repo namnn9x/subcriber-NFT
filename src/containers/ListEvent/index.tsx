@@ -10,6 +10,9 @@ import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { Event } from './Event'
 import { useUserStore } from '../../store/user'
 
+interface Props {
+  isMe?: boolean
+}
 const settings = {
   focusOnSelect: false,
   infinite: false,
@@ -19,7 +22,7 @@ const settings = {
   speed: 500,
 }
 
-export const ListEvent = () => {
+export const ListEvent = ({isMe = false} : Props) => {
   const { user: currentUser } = useUserStore();
   const { events, setEventAll } = useEventStore()
   const [loading, setLoading] = useState<boolean>(false)
@@ -64,7 +67,12 @@ export const ListEvent = () => {
         ) : (
           <div>
             {artistAll.map((user: IUser) => {
-              if (user.uid === currentUser.uid) return
+              if (isMe) {
+                console.log('=====================', 123);
+                if (user.uid !== currentUser.uid) return
+              } else {
+                if (user.uid === currentUser.uid) return
+              }
               return (
                 <div className='grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-1 gap-y-8 mb-5'>
                   {events.find((event) => event['uid'] === user.uid) && (

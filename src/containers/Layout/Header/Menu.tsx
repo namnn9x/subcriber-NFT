@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 
 const navigation = [
   { name: "Event List", href: "general-event" },
-  { name: "My Event", href: "#" },
+  { name: "My Event", href: "my-event" },
   { name: "NFT", href: "nfts" },
   { name: "Company", href: "company" },
 ];

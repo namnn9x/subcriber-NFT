@@ -38,6 +38,7 @@ function App() {
                 </Route>
                 <Route path="/" element={<Layout />}>
                   <Route path="/general-event" element={<ListEvent />} />
+                  <Route path="/my-event" element={<ListEvent isMe={true}/>} />
                   <Route path="/nfts" element={<NFTList />} />
                   <Route path="/company" element={<EventCreate/>} />
                 </Route>
