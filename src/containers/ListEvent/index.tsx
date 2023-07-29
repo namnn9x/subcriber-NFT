@@ -79,9 +79,9 @@ export const ListEvent = ({ isMe = false }: Props) => {
       <div className='container mx-auto scroll-smooth h-full font-semibold'>
         {loading ? (
           <LoadingPage />
-        ) : (
+        ) : (artistCurrent && artistCurrent.length &&
           <div>
-            {artistCurrent && artistCurrent.length &&
+            {
               artistCurrent.filter(user => isMe ? user.uid === currentUser.uid : user.uid !== currentUser.uid).map((user: IUser) => {
                 return (
                   <div className='grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-1 gap-y-8 mb-5'>
@@ -104,15 +104,15 @@ export const ListEvent = ({ isMe = false }: Props) => {
                 )
               })}
 
-            <div className='pb-10 pt-4 relative'>
-              {!isMe && artistAll && artistAll.length &&
+            {!isMe && artistAll && artistAll.length &&
+              <div className='pb-10 pt-4 relative'>
                 <Pagination
                   pageSize={countPerPage}
                   onChange={updatePage}
                   current={currentPage}
                   total={artistAll.filter(user => user.uid !== currentUser.uid).length}
-                />}
-            </div>
+                />
+              </div>}
           </div>
         )}
       </div>
