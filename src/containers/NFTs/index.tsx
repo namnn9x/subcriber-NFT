@@ -10,6 +10,8 @@ import Slider from 'react-slick'
 
 interface Props {
   isList?: boolean
+  setNFTRewards?: (nfts: Nft[]) => void
+  nftRewards?: Nft[]
 }
 
 const settings = {
@@ -21,7 +23,7 @@ const settings = {
   speed: 500,
 }
 
-const NFTList = ({ isList = false }: Props) => {
+const NFTList = ({ isList = false, nftRewards, setNFTRewards }: Props) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [nfts, setNfts] = useState<Nft[] | null>(null)
   const { connected, publicKey } = useWallet()
@@ -78,7 +80,7 @@ const NFTList = ({ isList = false }: Props) => {
                         <Slider {...settings}>
                           {nfts.map((nft, index: number) => (
                             <Fragment key={index}>
-                              <NftComponent nft={nft} isList />
+                              <NftComponent nft={nft} isList nftRewards={nftRewards} setNFTRewards={setNFTRewards}/>
                             </Fragment>
                           ))}
                         </Slider>

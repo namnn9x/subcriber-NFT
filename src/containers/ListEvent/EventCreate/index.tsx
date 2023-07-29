@@ -15,6 +15,7 @@ import { AiOutlinePlus } from 'react-icons/ai'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { NFTCreate } from '../../NFTs/NFTCreate'
+import { Nft } from '@shyft-to/js'
 
 export const EventCreate = () => {
   const [open, setOpen] = useState<boolean>(false)
@@ -26,6 +27,7 @@ export const EventCreate = () => {
   const { setEvent } = useEventStore()
   const { connected } = useWallet()
   const { setVisible } = useWalletModal()
+  const [ nftRewards, setNFTRewards ] = useState<Nft[] | undefined>([])
 
   const handleCreateNFT = () => {
     if (connected) {
@@ -113,7 +115,7 @@ export const EventCreate = () => {
                   className={`${blob ? 'before-bg-file' : ''
                     } relative cursor-pointer h-[30vh] w-full mx-auto flex flex-col items-center border-2 border-dashed rounded border-blue-600 text-base leading-[1.6] select-none`}
                 >
-                  <input ref={inputFileRef} type='file' onChange={onFileChange} accept='image/*' hidden required />
+                  <input ref={inputFileRef} type='file' onChange={onFileChange} accept='image/*' hidden />
                   <p className='text-sm font-medium text-start my-2'>Click to select photo</p>
                   <p className='text-center text-[#F05123] pointer-events-none'></p>
                 </div>
@@ -194,7 +196,7 @@ export const EventCreate = () => {
                 <span className='text-xs'>Choose your NFT as subrise reward</span>
               </label>
               <div>
-                <NFTList isList={true}/>
+                <NFTList isList={true} setNFTRewards={setNFTRewards} nftRewards={nftRewards}/>
                 <div>
 
                 <div className='pt-5'>
