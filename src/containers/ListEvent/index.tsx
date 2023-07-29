@@ -61,10 +61,10 @@ export const ListEvent = ({ isMe = false }: Props) => {
         const events = await getAllEvent()
         if (!events || !userArtists) return
         const eventUID = events.map(event => event.uid)
-        const artistFilter = userArtists.filter((art) => eventUID.includes(art.uid!))
+        const artistFilter = userArtists
         setEventAll(events)
         setArtistAll(artistFilter)
-        setArtistCurrentPage(artistFilter.slice(0, countPerPage))
+        setArtistCurrentPage(artistFilter)
 
       } catch (error) {
         console.log(error)
@@ -104,7 +104,7 @@ export const ListEvent = ({ isMe = false }: Props) => {
                 )
               })}
 
-            {!isMe && artistAll && artistAll.length &&
+            {/* {!isMe && artistAll && artistAll.length &&
               <div className='pb-10 pt-4 relative'>
                 <Pagination
                   pageSize={countPerPage}
@@ -112,7 +112,7 @@ export const ListEvent = ({ isMe = false }: Props) => {
                   current={currentPage}
                   total={artistAll.filter(user => user.uid !== currentUser.uid).length}
                 />
-              </div>}
+              </div>} */}
           </div>
         )}
       </div>

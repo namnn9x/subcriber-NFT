@@ -36,7 +36,7 @@ export const Layout = () => {
         <Outlet />
         {enableCreateEvent && <EventLayout/>}
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }

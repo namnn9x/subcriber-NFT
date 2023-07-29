@@ -110,7 +110,7 @@ const NFTList = ({ isList = false, nftRewards, setNFTRewards }: Props) => {
 
   return (
     <div className={`container mx-auto px-3 py-5`}>
-      <h1 className='text-4xl font-bold tracking-tight'>List NFTs</h1>
+      <h1 className='text-4xl font-bold tracking-tight mb-5'>List NFTs</h1>
       {renderList()}
     </div>
   )
