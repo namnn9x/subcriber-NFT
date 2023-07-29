@@ -5,9 +5,10 @@ import { TbGiftOff } from 'react-icons/tb'
 interface Props {
   event: IEvent
   handleCreateNFT: () => void
+  isMe: boolean
 }
 
-export const Event = ({event, handleCreateNFT} : Props) => {
+export const Event = ({event, handleCreateNFT, isMe} : Props) => {
   return (
     <div
       className='max-w-sm group bg-slate-200 text-black rounded-md overflow-hidden shadow-lg'
@@ -45,16 +46,16 @@ export const Event = ({event, handleCreateNFT} : Props) => {
         </div>
       </div>
       <div className='px-3 pb-5 flex justify-around'>
-        <button type='submit' className='btn btn-primary btn-lg h-10 w-28 px-3 py-5'>
+        {!isMe && <button type='submit' className='btn btn-primary btn-lg h-10 w-28 px-3 py-5'>
           Subrise
-        </button>
-        <button
+        </button>}
+        {isMe && <button
           onClick={handleCreateNFT}
           type='submit'
           className='btn btn-primary btn-lg h-10 w-28 px-3 py-5'
         >
           Create NFT
-        </button>
+        </button>}
       </div>
     </div>
   )
