@@ -231,7 +231,7 @@ body {
 
 .rc-pagination {
   position: absolute;
-  right: 0;
+  left: 0;
 }
 
 .rc-pagination li button {

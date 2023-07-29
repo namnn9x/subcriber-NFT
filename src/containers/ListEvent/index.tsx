@@ -1,4 +1,6 @@
 import { Fragment, useEffect, useState } from 'react'
+import Pagination from "rc-pagination"
+import "rc-pagination/assets/index.css"
 import { IEvent, getAllEvent } from '../../services/event'
 import { useEventStore } from '../../store/event'
 import { IUser, getAllArtists } from '../../services/users'
@@ -27,10 +29,14 @@ export const ListEvent = ({isMe = false} : Props) => {
   const { events, setEventAll } = useEventStore()
   const [loading, setLoading] = useState<boolean>(false)
   const [artistAll, setArtistAll] = useState<IUser[]>([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [artistCurrent, setArtistCurrentPage] = useState<IUser[]>([])
   const [ currentEvent, setCurrentEvent] = useState<IEvent>()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const { connected } = useWallet()
   const { setVisible } = useWalletModal()
+
+  const countPerPage = 3
   const handleCreateNFT = (event: IEvent) => {
     if (connected) {
       setCurrentEvent(event)
@@ -40,17 +46,26 @@ export const ListEvent = ({isMe = false} : Props) => {
     }
   }
 
+  const updatePage = (p: number) => {
+    setCurrentPage(p)
+    const to = countPerPage * p
+    const from = to - countPerPage
+    setArtistCurrentPage(artistAll.slice(from, to))
+  }
+
   useEffect(() => {
     void (async () => {
       try {
         setLoading(true)
-        const userArtist = await getAllArtists()
-        console.log(userArtist, 'userArtist')
+        const userArtists = await getAllArtists()
         const events = await getAllEvent()
-        console.log(events,'events')
-        if (!events || !userArtist) return
+        if (!events || !userArtists) return
+        const eventUID = events.map(event => event.uid)
+        const artistFilter = userArtists.filter((art) => eventUID.includes(art.uid!))
         setEventAll(events)
-        setArtistAll(userArtist)
+        setArtistAll(artistFilter)
+        setArtistCurrentPage(artistFilter.slice(0, countPerPage))
+
       } catch (error) {
         console.log(error)
       } finally {
@@ -66,9 +81,8 @@ export const ListEvent = ({isMe = false} : Props) => {
           <LoadingPage />
         ) : (
           <div>
-            {artistAll.map((user: IUser) => {
+            {artistCurrent.map((user: IUser) => {
               if (isMe) {
-                console.log('=====================', 123);
                 if (user.uid !== currentUser.uid) return
               } else {
                 if (user.uid === currentUser.uid) return
@@ -92,6 +106,15 @@ export const ListEvent = ({isMe = false} : Props) => {
                 </div>
               )
             })}
+
+      <div className='pb-12 relative'>
+        {artistAll && artistAll.length && <Pagination
+          pageSize={countPerPage}
+          onChange={updatePage}
+          current={currentPage}
+          total={artistAll.length}
+        />}
+      </div>
           </div>
         )}
       </div>

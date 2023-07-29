@@ -34,7 +34,7 @@ export const Event = ({event, handleCreateNFT, isMe} : Props) => {
 
   return (
     <div
-      className='max-w-xs my-0 mx-auto group bg-slate-200 text-black rounded-md overflow-hidden shadow-lg'
+      className='max-w-sm group bg-slate-200 text-black rounded-md overflow-hidden shadow-lg'
     >
       <div className='w-auto h-60'>
         <img
