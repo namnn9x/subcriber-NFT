@@ -13,6 +13,15 @@
   }
 }
 
+.list-top-event {
+  width: 966px;
+  margin: auto;
+}
+
+.top-event-icon {
+  font-size: 24px;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

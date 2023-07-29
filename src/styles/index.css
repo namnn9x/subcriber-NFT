@@ -166,13 +166,19 @@ body {
   right: 58px;
 }
 
+.btn-subscriber-icon-1 {
+  top: 90px;
+  right: 45px;
+  font-size: 34px;
+  color: #d71e1e;
+}
+
 .btn-subscriber-icon {
   width: 40px;
   background: #ffffff;
   border-radius: 11px;
   height: 40px;
   padding: 4px;
-  color: #628954;
 }
 
 .btn-subscriber-icon:hover {
