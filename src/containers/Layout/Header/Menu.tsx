@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useUserStore } from "../../../store/user";
-import { Role } from "../../Signup";
+import { ROLE } from "../../Signup";
 
 const navigations = [
   { name: "Event List", href: "general-event" },
@@ -13,7 +13,7 @@ export const Menu = () => {
   const location = useLocation();
   const { user: currentUser } = useUserStore()
 
-  if (currentUser && currentUser.role === Role.USER) {
+  if (currentUser && currentUser.role === ROLE.USER) {
     const myEvent = navigations.find((nav) => nav.name === "My Event")
     myEvent && navigations.splice(navigations.indexOf(myEvent), 1)
   }

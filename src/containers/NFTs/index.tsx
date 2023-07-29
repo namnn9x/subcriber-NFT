@@ -1,7 +1,5 @@
 import { Fragment, useEffect, useState } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
-import Pagination from "rc-pagination";
-import "rc-pagination/assets/index.css";
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { Network, Nft } from '@shyft-to/js'
 import { AiOutlinePlus } from 'react-icons/ai'
@@ -26,17 +24,7 @@ const settings = {
 const NFTList = ({ isList = false }: Props) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [nfts, setNfts] = useState<Nft[] | null>(null)
-  const [currentPage, setCurrentPage] = useState(1)
-  const countPerPage = 3
-  const [nftPages, setNftPages] = useState<Nft[] | null>(null)
   const { connected, publicKey } = useWallet()
-
-  const updatePage = (p: number) => {
-    setCurrentPage(p);
-    const to = countPerPage * p;
-    const from = to - countPerPage;
-    setNftPages(nfts && nfts.slice(from, to))
-  };
 
   useEffect(() => {
     async function fetchNFT(publicKey: string) {
@@ -47,7 +35,6 @@ const NFTList = ({ isList = false }: Props) => {
           network: Network.Devnet,
         })
         setNfts(nfts)
-        setNftPages(nfts.slice(0, countPerPage))
       } catch (error: any) {
         // throw new Error(error)
       } finally {
@@ -76,11 +63,11 @@ const NFTList = ({ isList = false }: Props) => {
               </>
             ) : (
               <>
-                {nftPages && nftPages.length ? (
+                {nfts && nfts.length ? (
                   <>
                     {!isList ? (
                       <div className='grid grid-cols-5 gap-8'>
-                        {nftPages.map((nft, index: number) => (
+                        {nfts.map((nft, index: number) => (
                           <Fragment key={index}>
                             <NftComponent nft={nft} isList />
                           </Fragment>
@@ -89,7 +76,7 @@ const NFTList = ({ isList = false }: Props) => {
                     ) : (
                       <>
                         <Slider {...settings}>
-                          {nftPages.map((nft, index: number) => (
+                          {nfts.map((nft, index: number) => (
                             <Fragment key={index}>
                               <NftComponent nft={nft} isList />
                             </Fragment>
@@ -122,14 +109,6 @@ const NFTList = ({ isList = false }: Props) => {
   return (
     <div className={`container mx-auto px-3 py-5`}>
       <h1 className='text-4xl font-bold tracking-tight'>List NFTs</h1>
-      <div className='pb-12 relative'>
-        {nfts && nfts.length && <Pagination
-          pageSize={countPerPage}
-          onChange={updatePage}
-          current={currentPage}
-          total={nfts.length}
-        />}
-      </div>
       {renderList()}
     </div>
   )

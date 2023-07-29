@@ -1,4 +1,6 @@
 import { Fragment, useEffect, useState } from 'react'
+import Pagination from "rc-pagination"
+import "rc-pagination/assets/index.css"
 import { IEvent, getAllEvent } from '../../services/event'
 import { useEventStore } from '../../store/event'
 import { IUser, getAllArtists } from '../../services/users'
@@ -27,10 +29,14 @@ export const ListEvent = ({isMe = false} : Props) => {
   const { events, setEventAll } = useEventStore()
   const [loading, setLoading] = useState<boolean>(false)
   const [artistAll, setArtistAll] = useState<IUser[]>([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [artistCurrent, setArtistCurrentPage] = useState<IUser[]>([])
   const [ currentEvent, setCurrentEvent] = useState<IEvent>()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const { connected } = useWallet()
   const { setVisible } = useWalletModal()
+
+  const countPerPage = 2
   const handleCreateNFT = (event: IEvent) => {
     if (connected) {
       setCurrentEvent(event)
@@ -40,17 +46,26 @@ export const ListEvent = ({isMe = false} : Props) => {
     }
   }
 
+  const updatePage = (p: number) => {
+    setCurrentPage(p)
+    const to = countPerPage * p
+    const from = to - countPerPage
+    setArtistCurrentPage(artistAll.slice(from, to))
+  }
+
   useEffect(() => {
     void (async () => {
       try {
         setLoading(true)
-        const userArtist = await getAllArtists()
-        console.log(userArtist, 'userArtist')
+        const userArtists = await getAllArtists()
         const events = await getAllEvent()
-        console.log(events,'events')
-        if (!events || !userArtist) return
+        if (!events || !userArtists) return
+        const eventUID = events.map(event => event.uid)
+        const artistFilter = userArtists.filter((art) => eventUID.includes(art.uid!))
         setEventAll(events)
-        setArtistAll(userArtist)
+        setArtistAll(artistFilter)
+        setArtistCurrentPage(artistFilter.slice(0, countPerPage))
+
       } catch (error) {
         console.log(error)
       } finally {
@@ -58,7 +73,7 @@ export const ListEvent = ({isMe = false} : Props) => {
       }
     })()
   }, [])
-
+console.log('===========artistAll', artistCurrent);
   return (
     <>
       <div className='container mx-auto scroll-smooth h-full font-semibold'>
@@ -66,13 +81,7 @@ export const ListEvent = ({isMe = false} : Props) => {
           <LoadingPage />
         ) : (
           <div>
-            {artistAll.map((user: IUser) => {
-              if (isMe) {
-                console.log('=====================', 123);
-                if (user.uid !== currentUser.uid) return
-              } else {
-                if (user.uid === currentUser.uid) return
-              }
+            {artistAll.filter(user => isMe ? user.uid === currentUser.uid : user.uid !== currentUser.uid).map((user: IUser) => {
               return (
                 <div className='grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-1 gap-y-8 mb-5'>
                   {events.find((event) => event['uid'] === user.uid) && (
@@ -92,6 +101,16 @@ export const ListEvent = ({isMe = false} : Props) => {
                 </div>
               )
             })}
+
+      <div className='pb-10 pt-4 relative'>
+        {!isMe && artistAll && artistAll.length && 
+        <Pagination
+          pageSize={countPerPage}
+          onChange={updatePage}
+          current={currentPage}
+          total={artistAll.filter(user => user.uid !== currentUser.uid).length}
+        />}
+      </div>
           </div>
         )}
       </div>

@@ -3,7 +3,6 @@ import produce from "immer";
 import { IEvent } from "../services/event";
 import { Timestamp } from "firebase/firestore";
 import { IUser } from "../services/users";
-import { Role } from "../containers/Signup";
 
 export interface IUserStore {
   user: IUser;
