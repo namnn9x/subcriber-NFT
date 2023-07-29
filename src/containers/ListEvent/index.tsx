@@ -24,14 +24,14 @@ const settings = {
   speed: 500,
 }
 
-export const ListEvent = ({isMe = false} : Props) => {
+export const ListEvent = ({ isMe = false }: Props) => {
   const { user: currentUser } = useUserStore();
   const { events, setEventAll } = useEventStore()
   const [loading, setLoading] = useState<boolean>(false)
   const [artistAll, setArtistAll] = useState<IUser[]>([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [artistCurrent, setArtistCurrentPage] = useState<IUser[]>([])
-  const [ currentEvent, setCurrentEvent] = useState<IEvent>()
+  const [artistCurrent, setArtistCurrentPage] = useState<IUser[]>()
+  const [currentEvent, setCurrentEvent] = useState<IEvent>()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const { connected } = useWallet()
   const { setVisible } = useWalletModal()
@@ -73,7 +73,7 @@ export const ListEvent = ({isMe = false} : Props) => {
       }
     })()
   }, [])
-console.log('===========artistAll', artistCurrent);
+
   return (
     <>
       <div className='container mx-auto scroll-smooth h-full font-semibold'>
@@ -81,40 +81,42 @@ console.log('===========artistAll', artistCurrent);
           <LoadingPage />
         ) : (
           <div>
-            {artistAll.filter(user => isMe ? user.uid === currentUser.uid : user.uid !== currentUser.uid).map((user: IUser) => {
-              return (
-                <div className='grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-1 gap-y-8 mb-5'>
-                  {events.find((event) => event['uid'] === user.uid) && (
-                    <div className='text-left text-xl mt-10'>Artist: {user.fullname || ''}</div>
-                  )}
-                  <div className=''>
-                    <Slider {...settings} centerPadding='50px'>
-                      {events.map((event: IEvent, index: number) => {
-                        if (user.uid !== event.uid) return
-                        return (
-                          <Fragment key={index}>
-                              {<Event event={event} handleCreateNFT={() => handleCreateNFT(event)} isMe={isMe}/>}
-                          </Fragment>
-                        )})}
-                    </Slider>
+            {artistCurrent && artistCurrent.length &&
+              artistCurrent.filter(user => isMe ? user.uid === currentUser.uid : user.uid !== currentUser.uid).map((user: IUser) => {
+                return (
+                  <div className='grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-1 gap-y-8 mb-5'>
+                    {events.find((event) => event['uid'] === user.uid) && (
+                      <div className='text-left text-xl mt-10'>Artist: {user.fullname || ''}</div>
+                    )}
+                    <div className=''>
+                      <Slider {...settings} centerPadding='50px'>
+                        {events.map((event: IEvent, index: number) => {
+                          if (user.uid !== event.uid) return
+                          return (
+                            <Fragment key={index}>
+                              {<Event event={event} handleCreateNFT={() => handleCreateNFT(event)} isMe={isMe} />}
+                            </Fragment>
+                          )
+                        })}
+                      </Slider>
+                    </div>
                   </div>
-                </div>
-              )
-            })}
+                )
+              })}
 
-      <div className='pb-10 pt-4 relative'>
-        {!isMe && artistAll && artistAll.length && 
-        <Pagination
-          pageSize={countPerPage}
-          onChange={updatePage}
-          current={currentPage}
-          total={artistAll.filter(user => user.uid !== currentUser.uid).length}
-        />}
-      </div>
+            <div className='pb-10 pt-4 relative'>
+              {!isMe && artistAll && artistAll.length &&
+                <Pagination
+                  pageSize={countPerPage}
+                  onChange={updatePage}
+                  current={currentPage}
+                  total={artistAll.filter(user => user.uid !== currentUser.uid).length}
+                />}
+            </div>
           </div>
         )}
       </div>
-      <NFTCreate isOpen={isOpen} setIsOpen={setIsOpen} event={currentEvent}/>
+      <NFTCreate isOpen={isOpen} setIsOpen={setIsOpen} event={currentEvent} />
     </>
   )
 }
