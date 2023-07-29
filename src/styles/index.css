@@ -161,6 +161,24 @@ body {
   transition: opacity 0.3s;
 }
 
+.btn-subscriber {
+  top: 69px;
+  right: 58px;
+}
+
+.btn-subscriber-icon {
+  width: 40px;
+  background: #ffffff;
+  border-radius: 11px;
+  height: 40px;
+  padding: 4px;
+  color: #628954;
+}
+
+.btn-subscriber-icon:hover {
+  color: #d71e1e;
+}
+
 .before-bg-file:hover:before {
   opacity: 0.1;
 }

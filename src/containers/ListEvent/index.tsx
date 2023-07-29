@@ -18,7 +18,7 @@ interface Props {
 const settings = {
   focusOnSelect: false,
   infinite: false,
-  slidesToShow: 3,
+  slidesToShow: 6,
   touchMove: false,
   slidesToScroll: 1,
   speed: 500,
@@ -73,7 +73,7 @@ export const ListEvent = ({isMe = false} : Props) => {
       }
     })()
   }, [])
-
+console.log('===========artistAll', artistCurrent);
   return (
     <>
       <div className='container mx-auto scroll-smooth h-full font-semibold'>
@@ -81,12 +81,7 @@ export const ListEvent = ({isMe = false} : Props) => {
           <LoadingPage />
         ) : (
           <div>
-            {artistCurrent.map((user: IUser) => {
-              if (isMe) {
-                if (user.uid !== currentUser.uid) return
-              } else {
-                if (user.uid === currentUser.uid) return
-              }
+            {artistAll.filter(user => isMe ? user.uid === currentUser.uid : user.uid !== currentUser.uid).map((user: IUser) => {
               return (
                 <div className='grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-1 gap-y-8 mb-5'>
                   {events.find((event) => event['uid'] === user.uid) && (
@@ -108,11 +103,12 @@ export const ListEvent = ({isMe = false} : Props) => {
             })}
 
       <div className='pb-10 pt-4 relative'>
-        {artistAll && artistAll.length && <Pagination
+        {!isMe && artistAll && artistAll.length && 
+        <Pagination
           pageSize={countPerPage}
           onChange={updatePage}
           current={currentPage}
-          total={artistAll.length}
+          total={artistAll.filter(user => user.uid !== currentUser.uid).length}
         />}
       </div>
           </div>
