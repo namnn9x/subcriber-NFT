@@ -26,8 +26,9 @@ export async function confirmTransactionFromFrontend(
 
 export async function confirmTransactionFromBackend(network: Network, encodedTransaction: string) {
   const connection = new Connection(clusterApiUrl(network), 'confirmed')
-  const feePayer = Keypair.fromSecretKey(decode(process.env.REACT_APP_PRIVATE_KEY!))
+  const feePayer = Keypair.fromSecretKey(decode('Gcq9-xRnLV6KpAhT'))
   const wallet = new NodeWallet(feePayer)
+  console.log(wallet, 'wallet ===========================')
   const recoveredTransaction = Transaction.from(Buffer.from(encodedTransaction, 'base64'))
   const signedTx = await wallet.signTransaction(recoveredTransaction)
   const confirmTransaction = await connection.sendRawTransaction(signedTx.serialize())
@@ -40,14 +41,21 @@ export async function signAndConfirmTransactionBe(
   callback: (signature: any, result: any) => void,
 ) {
   const phantom = new PhantomWalletAdapter()
-  await phantom.connect()
+  await phantom.connect().then(() => {
+    console.log('Connect vi thanh cong')
+  }).catch(() => {
+    console.log('Connect vi loi')
+  })
   const rpcUrl = clusterApiUrl(network)
   const connection = new Connection(rpcUrl, 'confirmed')
-  const ret = await confirmTransactionFromBackend(network, transaction)
-  console.log(ret)
+  try {
+    const ret = await confirmTransactionFromBackend(network, transaction).then()
+    connection.onSignature(ret, callback, 'finalized')
 
-  connection.onSignature(ret, callback, 'finalized')
-  return ret
+    return ret
+  } catch (error) {
+    console.log(error, 'error confirm transaction')
+  }
 }
 
 export async function signAndConfirmTransaction(

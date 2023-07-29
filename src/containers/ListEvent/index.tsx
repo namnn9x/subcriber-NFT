@@ -86,7 +86,7 @@ export const ListEvent = ({ isMe = false }: Props) => {
                 return (
                   <div className='grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-1 gap-y-8 mb-5'>
                     {events.find((event) => event['uid'] === user.uid) && (
-                      <div className='text-left text-xl mt-10'>Artist: {user.fullname || ''}</div>
+                      <div className='text-2xl font-bold mt-10 text-center text-white'>{user.fullname || ''}</div>
                     )}
                     <div className=''>
                       <Slider {...settings} centerPadding='50px'>

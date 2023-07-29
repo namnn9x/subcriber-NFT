@@ -42,7 +42,10 @@ export const updateEvent = async ({ newEvent }: {
   newEvent: IEvent
 }) => {
   const idx  = newEvent.id;
-  if (!idx) return
+  if (!idx) {
+    console.log('Khong có id su kien') 
+    return
+  }
   updateDoc(doc(db, "events", idx), {
     ...newEvent,
     updatedAt: Timestamp.now(),
@@ -64,7 +67,10 @@ export const getEventById = async (id: string) => {
 
     if (eventSnapshot.exists()) {
       const eventData = eventSnapshot.data();
-      return eventData;
+      return {
+        id,
+        ...eventData,
+      };
     } else {
       return null;
     }

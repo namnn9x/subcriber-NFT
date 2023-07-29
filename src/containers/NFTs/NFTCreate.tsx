@@ -142,7 +142,11 @@ export const NFTCreate = ({ setIsOpen, isOpen, event }: INFTCreate) => {
           ...getNewEvent,
           nftReward: [...getNewEvent.nftReward, mint]
         }
-        await updateEvent({ newEvent })
+        await updateEvent({ newEvent }).then((res) => {
+          message.success('Update nft successfully')
+        }).catch(() => {
+          message.error('Update nft error')
+        })
       }
     })()
   }, [mint])
