@@ -19,7 +19,7 @@ import { isValidPassword } from '../../libs/password'
 
 export enum Role {
   ARTIST = 'Artist',
-  USER = 'User'
+  USER = 'User',
 }
 
 const data = [
