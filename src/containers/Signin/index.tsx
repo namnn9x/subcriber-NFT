@@ -55,7 +55,7 @@ function Signin() {
   })
 
   useEffect(() => {
-    if (user.fullname) {
+    if (user.uid) {
       navigate("/");
     }
   }, []);

@@ -13,7 +13,6 @@ import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets'
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 import NFTList from './containers/NFTs'
 import { Network, ShyftSdk } from '@shyft-to/js'
-import Company from './containers/Company'
 import { ListEvent } from './containers/ListEvent'
 import { EventCreate } from './containers/ListEvent/EventCreate'
 

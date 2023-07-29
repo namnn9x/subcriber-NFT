@@ -37,6 +37,7 @@ interface NFTCreate {
   data?: File
 }
 
+export const LAMPORT = 0.000000001 
 export const NFTCreate = ({ setIsOpen, isOpen, event }: INFTCreate) => {
 
   const [loading, setLoading] = useState(false)
@@ -79,6 +80,7 @@ export const NFTCreate = ({ setIsOpen, isOpen, event }: INFTCreate) => {
       name: '',
       symbol: '',
       description: '',
+      maxSupply: 0,
       attributes: [
         {
           trait_type: '',
@@ -97,6 +99,7 @@ export const NFTCreate = ({ setIsOpen, isOpen, event }: INFTCreate) => {
           creatorWallet: publicKey.toString(),
           name: nft.name,
           symbol: nft.symbol,
+          maxSupply: nft.maxSupply,
           description: nft.description,
           image: file,
         })
@@ -214,6 +217,7 @@ export const NFTCreate = ({ setIsOpen, isOpen, event }: INFTCreate) => {
                   id="name"
                   onChange={formik.handleChange}
                   value={formik.values.name}
+                  required
                   className=""
                   placeholder="name"
                 />
@@ -230,8 +234,27 @@ export const NFTCreate = ({ setIsOpen, isOpen, event }: INFTCreate) => {
                   id="symbol"
                   onChange={formik.handleChange}
                   value={formik.values.symbol}
+                  required
                   className=""
                   placeholder="Symbol"
+                />
+              </div>
+            </div>
+
+            <div className="form-control no-icon">
+              <label htmlFor="maxSupply" className="block text-sm font-medium text-start my-2">
+                 Max supply
+              </label>
+              <div className="mt-1">
+                <input
+                  type='number'
+                  min={0}
+                  name="maxSupply"
+                  id="maxSupply"
+                  onChange={formik.handleChange}
+                  value={formik.values.maxSupply}
+                  className=""
+                  placeholder="Add max supply (total supply is limit ticket of your event)"
                 />
               </div>
             </div>

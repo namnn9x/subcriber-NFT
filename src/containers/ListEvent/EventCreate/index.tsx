@@ -15,6 +15,7 @@ import { AiOutlinePlus } from 'react-icons/ai'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { NFTCreate } from '../../NFTs/NFTCreate'
+import { Nft } from '@shyft-to/js'
 
 export const EventCreate = () => {
   const [open, setOpen] = useState<boolean>(false)
@@ -26,6 +27,7 @@ export const EventCreate = () => {
   const { setEvent } = useEventStore()
   const { connected } = useWallet()
   const { setVisible } = useWalletModal()
+  const [ nftRewards, setNFTRewards ] = useState<Nft[] | undefined>([])
 
   const handleCreateNFT = () => {
     if (connected) {
@@ -54,7 +56,7 @@ export const EventCreate = () => {
       const imageURL = await getDownloadURL(resImage.ref)
 
       message.success('Upload image successfully')
-
+     
       const getTime = new Date(event.eventTime).getTime()
       const newEvent: IEvent = {
         ...event,
@@ -63,7 +65,7 @@ export const EventCreate = () => {
         uid: user.uid || '',
         createdBy: user.fullname,
         subscriberId: [],
-        nftReward: [],
+        nftReward: nftRewards ? nftRewards.map(nft => nft.mint) : [],
       }
       const resEvent = await addEvent(newEvent)
       setEvent(resEvent as IEvent)
@@ -130,6 +132,7 @@ export const EventCreate = () => {
                     onChange={formik.handleChange}
                     value={formik.values.title}
                     className=''
+                    required
                     placeholder='Title'
                   />
                 </div>
@@ -162,6 +165,7 @@ export const EventCreate = () => {
                     id='eventTime'
                     onChange={formik.handleChange}
                     value={formik.values.eventTime}
+                    required
                     className=''
                     placeholder='Event time'
                   />
@@ -192,7 +196,7 @@ export const EventCreate = () => {
                 <span className='text-xs'>Choose your NFT as subrise reward</span>
               </label>
               <div>
-                <NFTList isList={true}/>
+                <NFTList isList={true} setNFTRewards={setNFTRewards} nftRewards={nftRewards}/>
                 <div>
 
                 <div className='pt-5'>
