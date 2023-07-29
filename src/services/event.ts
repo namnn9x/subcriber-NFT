@@ -8,6 +8,7 @@ export interface IEvent {
   description: string,
   coverImage: string,
   ticketLimit: number,
+  subscriberId: string[],
   nftReward: string[],
   createdBy?: string,
   eventTime?: Timestamp | null,
@@ -56,6 +57,22 @@ export const delEvent = async (id: string) => {
   }
 }
 
+export const getEventById = async (id: string) => {
+  try {
+    const eventDocRef = doc(db, 'events', id);
+    const eventSnapshot = await getDoc(eventDocRef);
+
+    if (eventSnapshot.exists()) {
+      const eventData = eventSnapshot.data();
+      return eventData;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+};
+
 export const getEventByUid = async (uid: string) => {
   try {
     const q = query(
@@ -81,6 +98,7 @@ export const getEventByUid = async (uid: string) => {
         updatedAt: padData.updatedAt,
         coverImage: padData.coverImage,
         nftReward: padData.nftReward,
+        subscriberId: padData.subscriberId,
         eventTime: padData.eventTime,
         ticketLimit: padData.ticketLimit,
       })
@@ -114,6 +132,7 @@ export const getAllEvent = async () => {
         createdBy: padData.createdBy,
         createdAt: padData.createdAt,
         updatedAt: padData.updatedAt,
+        subscriberId: padData.subscriberId,
         coverImage: padData.coverImage,
         nftReward: padData.nftReward,
         eventTime: padData.eventTime,

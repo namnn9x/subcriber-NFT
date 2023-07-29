@@ -1,6 +1,8 @@
-import { IEvent } from '../../../services/event'
+import { IEvent, getEventById, updateEvent } from '../../../services/event'
 import { HiGift } from 'react-icons/hi'
 import { TbGiftOff } from 'react-icons/tb'
+import { useUserStore } from '../../../store/user'
+import { useEventStore } from '../../../store/event'
 
 interface Props {
   event: IEvent
@@ -9,6 +11,27 @@ interface Props {
 }
 
 export const Event = ({event, handleCreateNFT, isMe} : Props) => {
+  const { user: currentUser } = useUserStore();
+  const { updateEventStore } = useEventStore();
+
+  const handleSubscribe = async () => {
+    if (!event.id || !currentUser.uid) return
+  
+    const resEvent = await getEventById(event.id) as IEvent
+    const nftReward = resEvent.nftReward
+    const mint = nftReward[Math.floor(Math.random()*nftReward.length)];
+
+    // Save id user subscriber
+
+    const newEvent: IEvent = {
+      ...resEvent,
+      subscriberId: [ ...resEvent.subscriberId, currentUser.uid]
+    }
+    
+    await updateEvent({ newEvent })
+    updateEventStore(event.id, newEvent)
+  }
+
   return (
     <div
       className='max-w-sm group bg-slate-200 text-black rounded-md overflow-hidden shadow-lg'
@@ -41,13 +64,13 @@ export const Event = ({event, handleCreateNFT, isMe} : Props) => {
         <div className='flex flex-wrap'>
           <div className='w-1/3 ml-auto text-left'>NFT reward:</div>
           <div className='w-1/3 mr-auto text-left flex items-center'>
-            {event.nftReward ? <HiGift /> : <TbGiftOff />}
+            { event.nftReward && event.nftReward.length ? <HiGift /> : <TbGiftOff />}
           </div>
         </div>
       </div>
       <div className='px-3 pb-5 flex justify-around'>
-        {!isMe && <button type='submit' className='btn btn-primary btn-lg h-10 w-28 px-3 py-5'>
-          Subrise
+        {!isMe && <button type='submit' onClick={handleSubscribe} className='btn btn-primary btn-lg h-10 w-28 px-3 py-5'>
+          Subscribe
         </button>}
         {isMe && <button
           onClick={handleCreateNFT}
