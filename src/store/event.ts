@@ -6,7 +6,7 @@ export interface IEventStore {
   events: IEvent[];
   setEventAll: (data: IEvent[]) => void;
   setEvent: (data: IEvent) => void;
-  updateEvent: (id: string, newData: Partial<IEvent>) => void;
+  updateEventStore: (id: string, newData: Partial<IEvent>) => void;
   delEvent: (id: string) => void;
 }
 
@@ -27,7 +27,7 @@ export const useEventStore = create<IEventStore>((set) => ({
       }),
     ),
 
-  updateEvent: (id, newData) =>
+    updateEventStore: (id, newData) =>
     set(
       produce((state: IEventStore) => {
         state.events.forEach((event, index) => {

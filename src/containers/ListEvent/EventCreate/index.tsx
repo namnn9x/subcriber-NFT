@@ -44,6 +44,7 @@ export const EventCreate = () => {
       createdBy: '',
       eventTime: new Date().toDateString(),
       ticketLimit: 0,
+      subscriberId: [],
       nftReward: [],
     },
     onSubmit: async (event) => {
@@ -61,6 +62,7 @@ export const EventCreate = () => {
         eventTime: Timestamp.fromMillis(getTime),
         uid: user.uid || '',
         createdBy: user.fullname,
+        subscriberId: [],
         nftReward: [],
       }
       const resEvent = await addEvent(newEvent)

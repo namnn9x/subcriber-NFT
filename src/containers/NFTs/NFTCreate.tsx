@@ -7,7 +7,7 @@ import { FcCheckmark } from 'react-icons/fc'
 import { MdDangerous } from 'react-icons/md'
 import { shyft } from '../../App'
 import { signAndConfirmTransaction } from '../../hooks'
-import { IEvent, updateEvent } from '../../services/event'
+import { IEvent, getEventById, updateEvent } from '../../services/event'
 import { message } from '../../components/message'
 
 interface INFTCreate {
@@ -130,13 +130,16 @@ export const NFTCreate = ({ setIsOpen, isOpen, event }: INFTCreate) => {
   useEffect(() => {
     void( async () => {
       if (event && Array.isArray(event.nftReward)) {
-        console.log(event, 'newEvent')
+        const getNewEvent = event.id && await getEventById(event.id) as IEvent
+        if (!getNewEvent) {
+          console.log('Not query newEvent')
+          return
+        }
         const newEvent: IEvent = {
-          ...event,
-          nftReward: [...event.nftReward, mint]
+          ...getNewEvent,
+          nftReward: [...getNewEvent.nftReward, mint]
         }
         await updateEvent({ newEvent })
-        setIsOpen(false)
       }
     })()
   }, [mint])
