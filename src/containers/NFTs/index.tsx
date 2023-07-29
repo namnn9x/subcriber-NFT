@@ -28,20 +28,15 @@ const NFTList = ({ isList = false }: Props) => {
   const [nfts, setNfts] = useState<Nft[] | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const countPerPage = 3
-  const [collection, setCollection] = useState(
-    (nfts?.slice(0, countPerPage))
-  );
-
+  const [nftPages, setNftPages] = useState<Nft[] | null>(null)
   const { connected, publicKey } = useWallet()
 
   const updatePage = (p: number) => {
     setCurrentPage(p);
     const to = countPerPage * p;
     const from = to - countPerPage;
-    setCollection(nfts?.slice(from, to))
+    setNftPages(nfts && nfts.slice(from, to))
   };
-
-  //Tao file .env.local or .env, tao 1 bien
 
   useEffect(() => {
     async function fetchNFT(publicKey: string) {
@@ -52,6 +47,7 @@ const NFTList = ({ isList = false }: Props) => {
           network: Network.Devnet,
         })
         setNfts(nfts)
+        setNftPages(nfts.slice(0, countPerPage))
       } catch (error: any) {
         // throw new Error(error)
       } finally {
@@ -80,11 +76,11 @@ const NFTList = ({ isList = false }: Props) => {
               </>
             ) : (
               <>
-                {nfts && nfts.length ? (
+                {nftPages && nftPages.length ? (
                   <>
                     {!isList ? (
                       <div className='grid grid-cols-5 gap-8'>
-                        {nfts.map((nft, index: number) => (
+                        {nftPages.map((nft, index: number) => (
                           <Fragment key={index}>
                             <NftComponent nft={nft} isList />
                           </Fragment>
@@ -93,7 +89,7 @@ const NFTList = ({ isList = false }: Props) => {
                     ) : (
                       <>
                         <Slider {...settings}>
-                          {nfts.map((nft, index: number) => (
+                          {nftPages.map((nft, index: number) => (
                             <Fragment key={index}>
                               <NftComponent nft={nft} isList />
                             </Fragment>
@@ -125,13 +121,15 @@ const NFTList = ({ isList = false }: Props) => {
 
   return (
     <div className={`container mx-auto px-3 py-5`}>
-      {nfts && nfts.length && <Pagination
-        pageSize={countPerPage}
-        onChange={updatePage}
-        current={currentPage}
-        total={nfts.length}
-      />}
-      <h1 className='text-4xl pb-4 font-bold tracking-tight'>List NFT</h1>
+      <h1 className='text-4xl font-bold tracking-tight'>List NFTs</h1>
+      <div className='pb-12 relative'>
+        {nfts && nfts.length && <Pagination
+          pageSize={countPerPage}
+          onChange={updatePage}
+          current={currentPage}
+          total={nfts.length}
+        />}
+      </div>
       {renderList()}
     </div>
   )
