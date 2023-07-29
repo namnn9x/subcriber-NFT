@@ -16,7 +16,7 @@ interface Props {
 const settings = {
   focusOnSelect: false,
   infinite: false,
-  slidesToShow: 3,
+  slidesToShow: 6,
   touchMove: false,
   slidesToScroll: 1,
   speed: 500,
