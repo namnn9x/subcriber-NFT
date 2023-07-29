@@ -1,6 +1,8 @@
 import { Nft } from '@shyft-to/js'
+import { restApiCall } from '@shyft-to/js/dist/cjs/utils'
 import { useState } from 'react'
 import { BsFillCheckCircleFill } from 'react-icons/bs'
+import { shyft } from '../../../App'
 interface Props {
   nft: Nft
   isList?: boolean
@@ -26,6 +28,7 @@ export const NftComponent = ({ nft, isList, nftRewards, setNFTRewards }: Props) 
         newList.splice(index, 1) // 2nd parameter means remove one item only
       }
     }
+    console.log(newList, 'newList');
     setNFTRewards(newList)
     setSelected(!selected)
   }

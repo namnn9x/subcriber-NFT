@@ -56,7 +56,7 @@ export const EventCreate = () => {
       const imageURL = await getDownloadURL(resImage.ref)
 
       message.success('Upload image successfully')
-
+     
       const getTime = new Date(event.eventTime).getTime()
       const newEvent: IEvent = {
         ...event,
@@ -65,7 +65,7 @@ export const EventCreate = () => {
         uid: user.uid || '',
         createdBy: user.fullname,
         subscriberId: [],
-        nftReward: [],
+        nftReward: nftRewards ? nftRewards.map(nft => nft.mint) : [],
       }
       const resEvent = await addEvent(newEvent)
       setEvent(resEvent as IEvent)
