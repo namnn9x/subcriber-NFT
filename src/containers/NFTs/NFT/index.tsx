@@ -5,8 +5,9 @@ interface Props {
   isList: boolean
 }
 export const NftComponent = ({ nft, isList }: Props) => {
+  const className = isList ? 'w-56 my-0 mx-auto bg-white rounded-lg group event-hover' : 'bg-white rounded-lg group event-hover'
   return (
-    <div className='bg-white rounded-lg group event-hover'>
+    <div className={className}>
       <div>
         <div className='aspect-h-1 aspect-w-1 w-full h-full overflow-hidden rounded xl:aspect-h-8 xl:aspect-w-7 relative'>
           <div className='w-full h-60 filter'>
