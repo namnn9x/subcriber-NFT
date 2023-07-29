@@ -16,7 +16,7 @@ export interface IUser {
   address: string
   searchID?: string
   dateOfBirth: Timestamp
-  role: Role
+  role: Role | string
   createdAt?: Timestamp
   status?: EUserStatus
 }

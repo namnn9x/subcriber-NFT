@@ -2,16 +2,8 @@ import { create } from "zustand";
 import produce from "immer";
 import { IEvent } from "../services/event";
 import { Timestamp } from "firebase/firestore";
-
-export interface IUser {
- uid?: string
- fullname: string
- email: string
- photoURL: string
- address: string
- dateOfBirth: Timestamp | null
- createdAt?: Timestamp | null
-}
+import { IUser } from "../services/users";
+import { Role } from "../containers/Signup";
 
 export interface IUserStore {
   user: IUser;
@@ -26,8 +18,9 @@ export const useUserStore = create<IUserStore>((set) => ({
    email: '',
    photoURL: '',
    address: '',
-   dateOfBirth: null,
-   createdAt: null,
+   dateOfBirth: Timestamp.now(),
+   createdAt: Timestamp.now(),
+   role: '',
   },
 
   setUser: (data: IUser) =>
@@ -46,8 +39,9 @@ export const useUserStore = create<IUserStore>((set) => ({
           email: "",
           photoURL: "",
           address: "",
-          dateOfBirth: null,
-          createdAt: null,
+          role: '',
+          dateOfBirth: Timestamp.now(),
+          createdAt: Timestamp.now(),
         };
       })
     ),
