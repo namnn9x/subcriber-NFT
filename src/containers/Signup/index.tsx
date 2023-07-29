@@ -17,24 +17,24 @@ import { useState } from 'react'
 import { isValidPassword } from '../../libs/password'
 
 
-export enum Role {
+export enum ROLE {
   ARTIST = 'Artist',
   USER = 'User',
 }
 
 const data = [
   {
-    name: Role.ARTIST,
+    name: ROLE.ARTIST,
     active: false
   },
   {
-    name: Role.USER,
+    name: ROLE.USER,
     active: true
   }
 ]
 
 interface IRole {
-  name: Role
+  name: ROLE
   active: boolean
 }
 
@@ -43,7 +43,7 @@ function Signup() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState<boolean>(false)
   const [roles, setRoles] = useState<IRole[]>(data)
-  const [currentRole, setCurrentRole] = useState<Role>(Role.USER)
+  const [currentRole, setCurrentRole] = useState<ROLE>(ROLE.USER)
 
   const formik = useFormik({
     initialValues: {

@@ -1,7 +1,7 @@
 import { updatePassword } from "firebase/auth"
 import { collection, doc, getDoc, getDocs, query, setDoc, Timestamp, updateDoc, where } from "firebase/firestore"
 import { auth, db } from "../libs/firebase"
-import { Role } from "../containers/Signup"
+import { ROLE } from "../containers/Signup"
 
 export enum EUserStatus {
   ACTIVE = 'ACTIVE',
@@ -16,7 +16,7 @@ export interface IUser {
   address: string
   searchID?: string
   dateOfBirth: Timestamp
-  role: Role | string
+  role: ROLE | string
   createdAt?: Timestamp
   status?: EUserStatus
 }
