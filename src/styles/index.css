@@ -229,24 +229,47 @@ body {
   --n: 4;
 }
 
-.rc-pagination {
-  position: absolute;
-  left: 0;
-}
-
 .rc-pagination li button {
   font-size: 22px !important;
   background-color: #fff0 !important;
   border: none !important;
 }
 
-.rc-pagination-disabled .rc-pagination-item-link {
-  color: #8a8a8a !important;
+.rc-pagination-prev button,
+.rc-pagination-next button {
+  color: #fff !important;
 }
 
-.rc-pagination-next:hover .rc-pagination-item-link {
-  color: #1890ff;
-  border-color: #1890ff;
+.rc-pagination .rc-pagination-item {
+  background-color: #fff0 !important;
+  border-color: #fff !important;
+  border-radius: 50%;
+}
+
+.rc-pagination .rc-pagination-item-active {
+  background: #fff !important;
+}
+
+.rc-pagination .rc-pagination-item a {
+  color: #fff !important;
+}
+
+.rc-pagination-item:focus,
+.rc-pagination-item:hover {
+  background: #fff !important;
+  transition: all 0.3s;
+}
+
+.rc-pagination .rc-pagination-item-active a {
+  color: #000 !important;
+}
+
+.rc-pagination .rc-pagination-item a:hover {
+  color: #000 !important;
+}
+
+.rc-pagination-disabled .rc-pagination-item-link {
+  color: #8a8a8a !important;
 }
 
 @import url('./sign.css');

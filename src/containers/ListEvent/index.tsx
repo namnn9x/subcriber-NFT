@@ -36,7 +36,7 @@ export const ListEvent = ({isMe = false} : Props) => {
   const { connected } = useWallet()
   const { setVisible } = useWalletModal()
 
-  const countPerPage = 3
+  const countPerPage = 2
   const handleCreateNFT = (event: IEvent) => {
     if (connected) {
       setCurrentEvent(event)
@@ -107,7 +107,7 @@ export const ListEvent = ({isMe = false} : Props) => {
               )
             })}
 
-      <div className='pb-12 relative'>
+      <div className='pb-10 pt-4 relative'>
         {artistAll && artistAll.length && <Pagination
           pageSize={countPerPage}
           onChange={updatePage}
