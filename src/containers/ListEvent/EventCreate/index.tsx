@@ -55,12 +55,13 @@ export const EventCreate = () => {
       message.success('Upload image successfully')
 
       const getTime = new Date(event.eventTime).getTime()
-      const newEvent = {
+      const newEvent: IEvent = {
         ...event,
         coverImage: imageURL,
         eventTime: Timestamp.fromMillis(getTime),
         uid: user.uid || '',
         createdBy: user.fullname,
+        nftReward: [],
       }
       const resEvent = await addEvent(newEvent)
       setEvent(resEvent as IEvent)

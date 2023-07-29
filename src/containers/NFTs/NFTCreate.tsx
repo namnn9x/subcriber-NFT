@@ -8,6 +8,7 @@ import { MdDangerous } from 'react-icons/md'
 import { shyft } from '../../App'
 import { signAndConfirmTransaction } from '../../hooks'
 import { IEvent, updateEvent } from '../../services/event'
+import { message } from '../../components/message'
 
 interface INFTCreate {
   event?: IEvent
@@ -40,6 +41,7 @@ export const NFTCreate = ({ setIsOpen, isOpen, event }: INFTCreate) => {
 
   const [loading, setLoading] = useState(false)
   const [minting, setMinting] = useState(false)
+  const [mint, setMint] = useState<string>('')
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
   const [file, setFile] = useState<any>()
@@ -47,27 +49,25 @@ export const NFTCreate = ({ setIsOpen, isOpen, event }: INFTCreate) => {
   const [blob, setBlob] = useState<string>('')
   const { publicKey, signTransaction } = useWallet()
 
-  const [mssg,setMssg] = useState('');
+  const [mssg, setMssg] = useState('');
 
-  const callback = (signature:any, result: any) => {
-    console.log("Signature ",signature);
-    console.log("result ",result);
+  const callback = (signature: any, result: any) => {
+    console.log("Signature ", signature);
+    console.log("result ", result);
 
     try {
-      if(signature.err === null)
-      {
+      if (signature.err === null) {
         setMssg("Minting successful. You can check your wallet");
         setSuccess(true)
       }
-      else
-      {
+      else {
         setMssg("Signature Failed");
         setError(true)
 
       }
     } catch (error) {
-        setMssg("Signature Failed, but check your wallet");
-        setError(true)
+      setMssg("Signature Failed, but check your wallet");
+      setError(true)
     }
 
   }
@@ -100,41 +100,52 @@ export const NFTCreate = ({ setIsOpen, isOpen, event }: INFTCreate) => {
           description: nft.description,
           image: file,
         })
-      if (mint && encoded_transaction ) {
-        try {
-          setMinting(false)
-          await signAndConfirmTransaction(Network.Devnet, encoded_transaction, callback)
-          if (event ) {
-            const newEvent: IEvent = {
-              ...event,
-              nftReward: event.nftReward && [...event.nftReward, mint]
-            }
-            console.log(newEvent, 'newEvent')
-            await updateEvent({ newEvent })
+        if (mint && encoded_transaction) {
+          try {
+            setMinting(true)
+            await signAndConfirmTransaction(Network.Devnet, encoded_transaction, callback)
+            setMint(mint)
+          } catch (error) {
+            setError(true)
+            setLoading(false)
+            console.log(error)
+          } finally {
+            setLoading(false)
+            setMinting(false)
           }
-        } catch (error) {
-          setError(true)
-          console.log(error)
-        } finally {
-          setMinting(true)
         }
-      }
+        console.log(mint, 'mint')
       } catch (error) {
         console.log(error)
         setError(true)
+        setLoading(false)
         setSuccess(false)
       } finally {
         setLoading(false)
       }
-      console.log(nft, 'nft')
+
     },
   })
 
   useEffect(() => {
+    void( async () => {
+      if (event && Array.isArray(event.nftReward)) {
+        console.log(event, 'newEvent')
+        const newEvent: IEvent = {
+          ...event,
+          nftReward: [...event.nftReward, mint]
+        }
+        await updateEvent({ newEvent })
+        setIsOpen(false)
+      }
+    })()
+  }, [mint])
+  
+  useEffect(() => {
     if (file) {
       setBlob(URL.createObjectURL(file))
     }
-
+    
     return () => {
       URL.revokeObjectURL(blob)
     }
@@ -152,7 +163,7 @@ export const NFTCreate = ({ setIsOpen, isOpen, event }: INFTCreate) => {
       }, 2000)
     }
   }, [success])
-
+  
   const onFileChange = (e: any) => {
     const newFile = e.target.files[0]
     if (newFile) {
@@ -181,9 +192,8 @@ export const NFTCreate = ({ setIsOpen, isOpen, event }: INFTCreate) => {
                   } as React.CSSProperties
                 }
                 onClick={() => inputFileRef.current && inputFileRef.current.click()}
-                className={`${
-                  blob ? 'before-bg-file' : ''
-                } relative p-6 cursor-pointer h-[200px] w-full mx-auto flex flex-col items-center border-2 border-dashed border-blue-600 text-base leading-[1.6] select-none`}
+                className={`${blob ? 'before-bg-file' : ''
+                  } relative p-6 cursor-pointer h-[200px] w-full mx-auto flex flex-col items-center border-2 border-dashed border-blue-600 text-base leading-[1.6] select-none`}
               >
                 <input ref={inputFileRef} type="file" onChange={onFileChange} accept="image/*" hidden />
                 <p className="text-sm font-medium text-start my-2">Click to select photo</p>
@@ -271,21 +281,21 @@ export const NFTCreate = ({ setIsOpen, isOpen, event }: INFTCreate) => {
           )}
         </div>
         {success && (
-            <div role="status" className="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
-              <div>
-              <FcCheckmark className='mx-auto mb-5 w-20 h-20 ease-in duration-1000'/>
-                {mssg}
-              </div>
+          <div role="status" className="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
+            <div>
+              <FcCheckmark className='mx-auto mb-5 w-20 h-20 ease-in duration-1000' />
+              {mssg}
             </div>
-          )}
-          {error && (
-            <div role="status" className="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
-              <div>
-              <MdDangerous className='mx-auto mb-5 w-20 h-20 ease-in duration-1000'/>
-                {mssg}
-              </div>
+          </div>
+        )}
+        {error && (
+          <div role="status" className="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
+            <div>
+              <MdDangerous className='mx-auto mb-5 w-20 h-20 ease-in duration-1000' />
+              {mssg}
             </div>
-          )}
+          </div>
+        )}
       </div>
     </Modal>
   )

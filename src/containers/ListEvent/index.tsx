@@ -44,6 +44,7 @@ export const ListEvent = () => {
         const userArtist = await getAllArtists()
         console.log(userArtist, 'userArtist')
         const events = await getAllEvent()
+        console.log(events,'events')
         if (!events || !userArtist) return
         setEventAll(events)
         setArtistAll(userArtist)

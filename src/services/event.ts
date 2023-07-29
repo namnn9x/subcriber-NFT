@@ -8,7 +8,7 @@ export interface IEvent {
   description: string,
   coverImage: string,
   ticketLimit: number,
-  nftReward?: string[],
+  nftReward: string[],
   createdBy?: string,
   eventTime?: Timestamp | null,
   createdAt?: Timestamp | null
@@ -18,9 +18,9 @@ export interface IEvent {
 const COLLECTION_NAME = 'events'
 
 export const addEvent = async (event: IEvent) => {
-  const { uid, title, coverImage, description, eventTime, ticketLimit, createdBy } = event
-
+  const { uid, title, coverImage, description, eventTime, ticketLimit, createdBy, nftReward } = event
   const docRef = await addDoc(collection(db, COLLECTION_NAME), {
+    nftReward,
     uid,
     title,
     description,
@@ -42,11 +42,8 @@ export const updateEvent = async ({ newEvent }: {
 }) => {
   const idx  = newEvent.id;
   if (!idx) return
-
   updateDoc(doc(db, "events", idx), {
-    // content,
-    newEvent,
-    // title,
+    ...newEvent,
     updatedAt: Timestamp.now(),
   })
 }
