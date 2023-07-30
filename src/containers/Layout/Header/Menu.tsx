@@ -16,6 +16,8 @@ export const Menu = () => {
   if (currentUser && currentUser.role === ROLE.USER) {
     const myEvent = navigations.find((nav) => nav.name === "My Event")
     myEvent && navigations.splice(navigations.indexOf(myEvent), 1)
+    const create = navigations.find((nav) => nav.name === "Create Event")
+    create && navigations.splice(navigations.indexOf(create), 1)
   }
 
   return (

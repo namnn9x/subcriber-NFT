@@ -6,12 +6,14 @@ import { getUser } from '../../services/users'
 import { useEffect } from 'react'
 import { useUserStore } from '../../store/user'
 import EventLayout from './Event'
+import { ROLE } from '../Signup'
 
 export const Layout = () => {
   const { user } = useAuth()
   const { setUser } = useUserStore()
+  const { user: currentUser } = useUserStore();
   const location = useLocation()
-  const enableCreateEvent = user && location.pathname !== '/company'
+  const enableCreateEvent = user && location.pathname !== '/company' && currentUser.role !== ROLE.USER
 
   useEffect(() => {
     if (user?.uid) {
