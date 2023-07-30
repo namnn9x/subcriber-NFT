@@ -49,10 +49,12 @@ export const Event = ({ event, handleCreateNFT, isMe }: Props) => {
     walletMaster,
     mint,
     publicKey,
+    event,
   }: {
     walletMaster: string,
     mint: string,
     publicKey: string,
+    event: IEvent,
   }) => {
     try {
       const res: any = await axios({
@@ -61,7 +63,7 @@ export const Event = ({ event, handleCreateNFT, isMe }: Props) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": 'Gcq9-xRnLV6KpAhT',
+          "x-api-key": process.env.REACT_APP_SHYFT_API_KEY!,
         },
         data: {
           network: Network.Devnet, // dev
@@ -77,7 +79,15 @@ export const Event = ({ event, handleCreateNFT, isMe }: Props) => {
         return;
       }
       console.log(res, 'res')
-      await signAndConfirmTransaction(Network.Devnet, res.data.result.encoded_transaction, callback).then(() => {
+      await signAndConfirmTransactionBe(Network.Devnet, res.data.result.encoded_transaction, callback).then(async () => {
+        
+        const newEvent: IEvent = {
+          ...event,
+          subscriberId: (event.subscriberId ? [...event.subscriberId, currentUser.uid] : [currentUser.uid]) as string[]
+        };
+        
+        await updateEvent({ newEvent })
+        updateEventStore(event.id as string, newEvent)
         message.success('Sign successfully transaction')
       }).catch((err) => {
         console.log(`${err} err loi `)
@@ -141,16 +151,9 @@ export const Event = ({ event, handleCreateNFT, isMe }: Props) => {
     await minNFT({
       walletMaster: masterNft.owner,
       mint,
-      publicKey: publicKey.toBase58()
+      publicKey: publicKey.toBase58(),
+      event: resEvent,
     })
-
-    const newEvent: IEvent = {
-      ...resEvent,
-      subscriberId: resEvent.subscriberId ? [...resEvent.subscriberId, currentUser.uid] : [currentUser.uid]
-    };
-
-    await updateEvent({ newEvent })
-    updateEventStore(event.id, newEvent)
   }
 
   return (
