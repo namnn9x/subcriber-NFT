@@ -4,7 +4,7 @@ import { IoIosAddCircleOutline } from 'react-icons/io'
 import { useUserStore } from '../../../store/user'
 import { useEventStore } from '../../../store/event'
 import { restApiCall } from '@shyft-to/js/dist/cjs/utils'
-import { Network, ShyftSdk } from '@shyft-to/js'
+import { Network, Nft, ShyftSdk } from '@shyft-to/js'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { shyft } from '../../../App'
 import { signAndConfirmTransaction, signAndConfirmTransactionBe } from '../../../hooks'
@@ -12,6 +12,7 @@ import { TbGiftOff } from 'react-icons/tb'
 import { HiGift } from 'react-icons/hi'
 import axios from 'axios'
 import { message } from '../../../components/message'
+import { useEffect, useState } from 'react'
 
 interface Props {
   event: IEvent
@@ -23,7 +24,7 @@ export const Event = ({ event, handleCreateNFT, isMe }: Props) => {
   const { user: currentUser } = useUserStore();
   const { updateEventStore } = useEventStore();
   const { publicKey } = useWallet()
-
+  const [currentMasterNft, setMasterNft] = useState<Nft>()
   const callback = (signature: any, result: any) => {
     console.log("Signature ", signature);
     console.log("result ", result);
@@ -80,15 +81,15 @@ export const Event = ({ event, handleCreateNFT, isMe }: Props) => {
       }
       console.log(res, 'res')
       await signAndConfirmTransactionBe(Network.Devnet, res.data.result.encoded_transaction, callback).then(async () => {
-        
+
         const newEvent: IEvent = {
           ...event,
           subscriberId: (event.subscriberId ? [...event.subscriberId, currentUser.uid] : [currentUser.uid]) as string[]
         };
-        
-        await updateEvent({ newEvent })
-        updateEventStore(event.id as string, newEvent)
-        message.success('Sign successfully transaction')
+
+        // await updateEvent({ newEvent })
+        // updateEventStore(event.id as string, newEvent)
+        // message.success('Sign successfully transaction')
       }).catch((err) => {
         console.log(`${err} err loi `)
         message.error('Sign error transaction')
@@ -100,7 +101,7 @@ export const Event = ({ event, handleCreateNFT, isMe }: Props) => {
   }
   const checkUidSubscribed = (subscriberId: string[]) => {
     if (!event || !currentUser.uid || !subscriberId) return
-    
+
     if (subscriberId.includes(currentUser.uid)) {
       return true
     }
@@ -118,11 +119,11 @@ export const Event = ({ event, handleCreateNFT, isMe }: Props) => {
   const handleSubscribe = async () => {
     if (!event.id || !currentUser.uid) return
 
-    const check = checkUidSubscribed(event.subscriberId)
-    if (check) {
-      message.success('You have registered')
-      return
-    }
+    // const check = checkUidSubscribed(event.subscriberId)
+    // if (check) {
+    //   message.success('You have registered')
+    //   return
+    // }
     checkTicketLimit(event.subscriberId, event.ticketLimit)
 
     const resEvent = await getEventById(event.id) as IEvent
@@ -148,13 +149,39 @@ export const Event = ({ event, handleCreateNFT, isMe }: Props) => {
       console.log('Not is publicKey')
       return
     }
-    await minNFT({
-      walletMaster: masterNft.owner,
-      mint,
-      publicKey: publicKey.toBase58(),
-      event: resEvent,
-    })
+
+    setMasterNft(masterNft)
+    // await minNFT({
+    //   walletMaster: masterNft.owner,
+    //   mint,
+    //   publicKey: publicKey.toBase58(),
+    //   event: resEvent,
+    // })
   }
+
+  useEffect(() => {
+    void (() => {
+      setTimeout(async () => {
+        if (currentMasterNft) {
+          if (!event.id) {
+            console.log('Not event id')
+            return
+          }
+          if (!publicKey) {
+            console.log('Not is publicKey')
+            return
+          }
+          const resEvent = await getEventById(event.id) as IEvent
+          await minNFT({
+            walletMaster: currentMasterNft.owner,
+            mint: currentMasterNft.mint,
+            publicKey: publicKey.toBase58(),
+            event: resEvent,
+          })
+        }
+      }, (2000))
+    })()
+  }, [currentMasterNft])
 
   return (
     <div
@@ -188,14 +215,14 @@ export const Event = ({ event, handleCreateNFT, isMe }: Props) => {
           </div>
         </div>
         <div className='justify-around hidden group-hover:flex'>
-          {checkUidSubscribed(event.subscriberId) 
+          {checkUidSubscribed(event.subscriberId)
             ? !isMe && <button type='submit' onClick={handleSubscribe} className='px-3 py-5 text-2xl absolute w-8 h-7 btn-subscriber-icon-1'>
-            <BsFillSuitHeartFill className={''} />
-            </button> 
-            : 
+              <BsFillSuitHeartFill className={''} />
+            </button>
+            :
             !isMe && <button type='submit' onClick={handleSubscribe} className='px-3 py-5 text-slate-600 text-2xl w-7 h-28 absolute btn-subscriber'>
-            <BsFillSuitHeartFill className={`btn-subscriber-icon`} aria-description='Subscriber' />
-          </button>}
+              <BsFillSuitHeartFill className={`btn-subscriber-icon`} aria-description='Subscriber' />
+            </button>}
           {isMe && <button
             onClick={handleCreateNFT}
             type='submit'
