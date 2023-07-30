@@ -81,15 +81,15 @@ export const Event = ({ event, handleCreateNFT, isMe }: Props) => {
       }
       console.log(res, 'res')
       await signAndConfirmTransactionBe(Network.Devnet, res.data.result.encoded_transaction, callback).then(async () => {
-
+        message.success('Connect Transaction successfully')
         const newEvent: IEvent = {
           ...event,
           subscriberId: (event.subscriberId ? [...event.subscriberId, currentUser.uid] : [currentUser.uid]) as string[]
         };
 
-        // await updateEvent({ newEvent })
-        // updateEventStore(event.id as string, newEvent)
-        // message.success('Sign successfully transaction')
+        await updateEvent({ newEvent })
+        updateEventStore(event.id as string, newEvent)
+        message.success('Sign successfully transaction')
       }).catch((err) => {
         console.log(`${err} err loi `)
         message.error('Sign error transaction')
@@ -119,11 +119,11 @@ export const Event = ({ event, handleCreateNFT, isMe }: Props) => {
   const handleSubscribe = async () => {
     if (!event.id || !currentUser.uid) return
 
-    // const check = checkUidSubscribed(event.subscriberId)
-    // if (check) {
-    //   message.success('You have registered')
-    //   return
-    // }
+    const check = checkUidSubscribed(event.subscriberId)
+    if (check) {
+      message.success('You have registered')
+      return
+    }
     checkTicketLimit(event.subscriberId, event.ticketLimit)
 
     const resEvent = await getEventById(event.id) as IEvent
@@ -163,6 +163,7 @@ export const Event = ({ event, handleCreateNFT, isMe }: Props) => {
     void (() => {
       setTimeout(async () => {
         if (currentMasterNft) {
+          console.log(currentMasterNft, 'currentMasterNft')
           if (!event.id) {
             console.log('Not event id')
             return
@@ -215,12 +216,7 @@ export const Event = ({ event, handleCreateNFT, isMe }: Props) => {
           </div>
         </div>
         <div className='justify-around hidden group-hover:flex'>
-          {checkUidSubscribed(event.subscriberId)
-            ? !isMe && <button type='submit' onClick={handleSubscribe} className='px-3 py-5 text-2xl absolute w-8 h-7 btn-subscriber-icon-1'>
-              <BsFillSuitHeartFill className={''} />
-            </button>
-            :
-            !isMe && <button type='submit' onClick={handleSubscribe} className='px-3 py-5 text-slate-600 text-2xl w-7 h-28 absolute btn-subscriber'>
+          {!isMe && <button type='submit' onClick={handleSubscribe} className='px-3 py-5 text-slate-600 text-2xl w-7 h-28 absolute btn-subscriber'>
               <BsFillSuitHeartFill className={`btn-subscriber-icon`} aria-description='Subscriber' />
             </button>}
           {isMe && <button
