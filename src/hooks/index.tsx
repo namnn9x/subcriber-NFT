@@ -26,7 +26,7 @@ export async function confirmTransactionFromFrontend(
 
 export async function confirmTransactionFromBackend(network: Network, encodedTransaction: string) {
   const connection = new Connection(clusterApiUrl(network), 'confirmed')
-  const feePayer = Keypair.fromSecretKey(decode('Gcq9-xRnLV6KpAhT'))
+  const feePayer = Keypair.fromSecretKey(decode(process.env.REACT_APP_PRIVATE_KEY!))
   const wallet = new NodeWallet(feePayer)
   console.log(wallet, 'wallet ===========================')
   const recoveredTransaction = Transaction.from(Buffer.from(encodedTransaction, 'base64'))
